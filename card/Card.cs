@@ -1,5 +1,4 @@
 ﻿using System;
-using Memory;
 using System.Collections.Generic;
 using System.Windows.Media.Imaging;
 
@@ -17,11 +16,8 @@ namespace Memory.card
         {
             Type = type;
 
-            /*
-            Uri uri = new Uri(path);
+            var uri = new Uri(path);
             Image = new BitmapImage(uri);
-            */
-            Image = null;
         }
 
         /// <summary>
@@ -31,9 +27,9 @@ namespace Memory.card
         /// <returns>A list of cards twice as big as images.</returns>
         public static List<Card> Generate(string[] images)
         {
-            List<Card> cards = new List<Card>();
+            var cards = new List<Card>();
 
-            for (int i = 0; i < images.Length; i++)
+            for (var i = 0; i < images.Length; i++)
             {
                 // Add 2 card objects to list
                 cards.Add(new Card(i, images[i]));
@@ -50,12 +46,12 @@ namespace Memory.card
         /// <param name="cards">The List of cards to shuffle.</param>
         public static void Shuffle(IList<Card> cards)
         {
-            Random random = new Random();
+            var random = new Random();
 
-            for (int i = 0; i < cards.Count; i++)
+            for (var i = 0; i < cards.Count; i++)
             {
-                int j = random.Next(i);
-                Card value = cards[j];
+                var j = random.Next(i);
+                var value = cards[j];
                 cards[j] = cards[i];
                 cards[i] = value;
             }
