@@ -24,6 +24,13 @@ namespace Memory.ui
         {
             InitializeComponent();
             _UIFrame.Content = new MainPage();
+            Height = System.Windows.SystemParameters.PrimaryScreenHeight;
+            Width = System.Windows.SystemParameters.PrimaryScreenWidth;
+        }
+
+        public static void QuitApplication()
+        {
+            Environment.Exit(0);
         }
     }
 }

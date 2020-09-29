@@ -24,5 +24,10 @@ namespace Memory.ui.pages
         {
             InitializeComponent();
         }
+            
+        private void Quit(object sender, RoutedEventArgs e)
+        {
+            MainWindow.QuitApplication();
+        }
     }
 }
