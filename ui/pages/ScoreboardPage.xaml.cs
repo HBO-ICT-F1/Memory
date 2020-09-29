@@ -7,9 +7,6 @@ namespace Memory.ui.pages
         public ScoreboardPage()
         {
             InitializeComponent();
-
-
-        h  
         }
     }
 }
