@@ -24,7 +24,17 @@ namespace Memory.ui.pages
         {
             InitializeComponent();
         }
-            
+
+        private void Settings(object sender, RoutedEventArgs e)
+        {
+            MainWindow.Window.ChangePage(this);
+        }
+
+        private void Scoreboard(object sender, RoutedEventArgs e)
+        {
+            MainWindow.Window.ChangePage(this);
+        }
+
         private void Quit(object sender, RoutedEventArgs e)
         {
             MainWindow.QuitApplication();

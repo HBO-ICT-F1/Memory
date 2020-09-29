@@ -20,10 +20,13 @@ namespace Memory.ui
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static readonly MainWindow Window = new MainWindow();
+        
         public MainWindow()
         {
+           
             InitializeComponent();
-            _UIFrame.Content = new MainPage();
+            ChangePage(new MainPage());
             Height = System.Windows.SystemParameters.PrimaryScreenHeight;
             Width = System.Windows.SystemParameters.PrimaryScreenWidth;
         }
@@ -31,6 +34,11 @@ namespace Memory.ui
         public static void QuitApplication()
         {
             Environment.Exit(0);
+        }
+
+        public void ChangePage(Page page)
+        {
+            _UIFrame.Content = page;
         }
     }
 }

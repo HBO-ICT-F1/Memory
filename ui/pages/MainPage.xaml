@@ -10,8 +10,8 @@
 
     <Grid>
         <Button Height="50px" Width="400px" Background="Orange" FontSize="20" Margin="0,145,0,255" >Play</Button>
-        <Button Height="50px" Width="400px" Background="Orange" FontSize="20" >Scoreboard</Button>
-        <Button Click="Quit" Height="50px" Width="400px" Background="Orange" FontSize="20" Margin="0,255,0,145">Settings</Button>
+        <Button Click="Scoreboard" Height="50px" Width="400px" Background="Orange" FontSize="20" >Scoreboard</Button>
+        <Button Click="Settings" Height="50px" Width="400px" Background="Orange" FontSize="20" Margin="0,255,0,145">Settings</Button>
         <Button Click="Quit" Height="50px" Width="400px" Background="Orange" FontSize="20" Margin="0,365,0,145">Quit</Button>
     </Grid>
 </Page>
