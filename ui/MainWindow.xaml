@@ -5,6 +5,6 @@
         WindowState="Maximized"
         WindowStyle="None">
     <Grid>
-        <Frame NavigationUIVisibility="Hidden" x:Name="UiFrame" />
+        <Frame PreviewKeyDown="EscapeMenu" NavigationUIVisibility="Hidden" x:Name="UiFrame" />
     </Grid>
 </Window>

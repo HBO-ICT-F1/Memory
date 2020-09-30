@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -39,14 +37,11 @@ namespace Memory.ui
             UiFrame.Content = page;
         }
 
-        private void EscapeMenu()
+        private void EscapeMenu(object sender, KeyEventArgs e)
         {
-            while (true)
-            {
-                if (Keyboard.IsKeyDown(Key.Escape)) Debug.WriteLine("Pressed");
-                Thread.Sleep(10);
-                Debug.WriteLine("Not pressed");
-            }
+            if (e.Key == Key.Escape)
+                //@Todo add function to open other page on top of current page
+                QuitApplication();
         }
     }
 }
