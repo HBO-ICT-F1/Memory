@@ -1,29 +1,39 @@
-﻿using Memory.ui.pages;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using Memory.ui.pages;
 
 namespace Memory.ui
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    ///     Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
+        private static MainWindow mainWindow;
+
         public MainWindow()
         {
+            mainWindow = this;
             InitializeComponent();
-            _UIFrame.Content = new MainPage();
+            ChangePage(new MainPage());
+            Height = SystemParameters.PrimaryScreenHeight;
+            Width = SystemParameters.PrimaryScreenWidth;
+        }
+
+        public static MainWindow GetMainWindow()
+        {
+            return mainWindow;
+        }
+
+        public static void QuitApplication()
+        {
+            Environment.Exit(0);
+        }
+
+        public void ChangePage(Page page)
+        {
+            UiFrame.Content = page;
         }
     }
 }

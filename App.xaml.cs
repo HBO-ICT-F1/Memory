@@ -13,5 +13,6 @@ namespace Memory
     /// </summary>
     public partial class App : Application
     {
+        
     }
 }
