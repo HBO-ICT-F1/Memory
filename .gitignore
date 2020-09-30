@@ -348,5 +348,13 @@ MigrationBackup/
 
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
-/.idea/.idea.Memory.dir/.idea/codeStyles/codeStyleConfig.xml
-.idea
+
+# Rider
+.idea/.idea.Memory/.idea/contentModel.xml
+.idea/.idea.Memory/.idea/encodings.xml
+.idea/.idea.Memory/.idea/indexLayout.xml
+.idea/.idea.Memory/.idea/modules.xml
+.idea/.idea.Memory/.idea/projectSettingsUpdater.xml
+.idea/.idea.Memory/.idea/vcs.xml
+.idea/.idea.Memory/.idea/workspace.xml
+.idea/.idea.Memory/riderModule.iml
