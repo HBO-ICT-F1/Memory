@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Memory.ui.pages;
 
 namespace Memory.ui
@@ -34,6 +37,16 @@ namespace Memory.ui
         public void ChangePage(Page page)
         {
             UiFrame.Content = page;
+        }
+
+        private void EscapeMenu()
+        {
+            while (true)
+            {
+                if (Keyboard.IsKeyDown(Key.Escape)) Debug.WriteLine("Pressed");
+                Thread.Sleep(10);
+                Debug.WriteLine("Not pressed");
+            }
         }
     }
 }

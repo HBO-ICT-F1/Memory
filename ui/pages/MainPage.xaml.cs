@@ -14,6 +14,11 @@ namespace Memory.ui.pages
             InitializeComponent();
         }
 
+        private void Play(object sender, RoutedEventArgs e)
+        {
+            MainWindow.GetMainWindow().ChangePage(new GamePage());
+        }
+
         private void Settings(object sender, RoutedEventArgs e)
         {
             MainWindow.GetMainWindow().ChangePage(new SettingsPage());
