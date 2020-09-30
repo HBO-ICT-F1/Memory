@@ -33,7 +33,7 @@ namespace Memory.ui
 
         public void ChangePage(Page page)
         {
-            _UIFrame.Content = page;
+            UiFrame.Content = page;
         }
     }
 }
