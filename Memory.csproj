@@ -123,6 +123,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ui\assets\" />
+    <Folder Include="ui\assets\themes\default" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
