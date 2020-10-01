@@ -4,7 +4,7 @@
         Title="Memory"
         WindowState="Maximized"
         WindowStyle="None"
-        PreviewKeyDown="EscapeMenu">
+        PreviewKeyUp="EscapeMenu">
     <Grid x:Name="mainGrid">
         <Frame NavigationUIVisibility="Hidden" x:Name="UiFrame" />
     </Grid>

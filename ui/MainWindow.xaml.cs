@@ -14,27 +14,28 @@ namespace Memory.ui
     public partial class MainWindow : Window
     {
         private static MainWindow mainWindow;
-        private readonly Button escapeMenuButton;
-        private readonly Rectangle escapeMenuRectangle;
-        private bool escapeMenuToggle;
+        private readonly Frame escapeMenu;
+        private readonly Rectangle escapeMenuBg;
+        private long escapeMenuDelay;
+        public bool escapeMenuToggle;
 
         public MainWindow()
         {
             mainWindow = this;
             escapeMenuToggle = false;
+            escapeMenuDelay = DateTime.Now.ToFileTime();
             InitializeComponent();
             ChangePage(new MainPage());
             Height = SystemParameters.PrimaryScreenHeight;
             Width = SystemParameters.PrimaryScreenWidth;
-            escapeMenuRectangle = new Rectangle();
-            escapeMenuRectangle.Height = 400;
-            escapeMenuRectangle.Width = 600;
-            escapeMenuRectangle.Fill = Brushes.CornflowerBlue;
-            escapeMenuButton = new Button {Content = "Quit"};
-            escapeMenuButton.Width = 100;
-            escapeMenuButton.Height = 33;
-            escapeMenuButton.FontSize = 20;
-            escapeMenuButton.Click += (sender, args) => QuitApplication();
+            escapeMenu = new Frame();
+            escapeMenu.Content = new EscapeMenuPage();
+            escapeMenu.Width = Width / 2;
+            escapeMenu.Height = Height / 2;
+            escapeMenuBg = new Rectangle();
+            escapeMenuBg.Height = Height;
+            escapeMenuBg.Width = Width;
+            escapeMenuBg.Fill = new SolidColorBrush(Color.FromArgb(150, 35, 35, 35));
         }
 
         public static MainWindow GetMainWindow()
@@ -54,21 +55,23 @@ namespace Memory.ui
 
         private void EscapeMenu(object sender, KeyEventArgs e)
         {
+            if (DateTime.Now.ToFileTime() <= escapeMenuDelay) return;
             if (e.Key == Key.Escape) escapeMenuToggle = !escapeMenuToggle;
             DrawEscapeMenu();
+            escapeMenuDelay = DateTime.Now.ToFileTime() + 5000000; //0.5S
         }
 
-        private void DrawEscapeMenu()
+        public void DrawEscapeMenu()
         {
             if (!escapeMenuToggle)
             {
-                mainGrid.Children.Remove(escapeMenuButton);
-                mainGrid.Children.Remove(escapeMenuRectangle);
+                mainGrid.Children.Remove(escapeMenuBg);
+                mainGrid.Children.Remove(escapeMenu);
                 return;
             }
 
-            mainGrid.Children.Add(escapeMenuRectangle);
-            mainGrid.Children.Add(escapeMenuButton);
+            mainGrid.Children.Add(escapeMenuBg);
+            mainGrid.Children.Add(escapeMenu);
         }
     }
 }
