@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Memory.ui.pages;
 
@@ -36,6 +37,11 @@ namespace Memory.ui
             escapeMenuBg.Height = Height;
             escapeMenuBg.Width = Width;
             escapeMenuBg.Fill = new SolidColorBrush(Color.FromArgb(150, 35, 35, 35));
+            var myBrush = new ImageBrush();
+            var image = new Image();
+            image.Source = new BitmapImage(new Uri("https://miro.medium.com/max/10514/1*TG8yT-bltiG0FcRpx3YkRA.jpeg"));
+            myBrush.ImageSource = image.Source;
+            mainWindow.Background = myBrush;
         }
 
         public static MainWindow GetMainWindow()
