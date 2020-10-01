@@ -4,7 +4,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using Memory.card;
 using Path = System.IO.Path;
 
@@ -52,6 +54,7 @@ namespace Memory.ui.pages
                 RowDefinition Row = new RowDefinition();
                 Row.Height = new GridLength(cardHeight);
                 Grid.RowDefinitions.Add(Row);
+                Grid.ShowGridLines = true;
             }
 
             int index = 0;
@@ -59,26 +62,29 @@ namespace Memory.ui.pages
             {
                 for (int y = 0; y < rows; y++)
                 {
-                    Button button = new Button();
+                    Image image = new Image();
+                    image.RenderSize = new Size(cardWidth, cardHeight);
+                    image.Stretch = Stretch.Fill;
                     Card card = cards[index];
-                    button.Click += (sender, e) => {
-                        Button currentButton = sender as Button;
-                        ButtonHandler(card, currentButton);
-                    };
-                    Grid.SetRow(button, y);
-                    Grid.SetColumn(button, x);
-                    Grid.Children.Add(button);
+                    image.MouseDown += new MouseButtonEventHandler((sender, e) => {
+                        Image cardImage = sender as Image;
+                        ButtonHandler(card, cardImage);
+                    });
+                    image.Source = new BitmapImage(new Uri($"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default.jpg"));
+                    Grid.SetRow(image, y);
+                    Grid.SetColumn(image, x);
+                    Grid.Children.Add(image);
                     index++;
                 }
             }
             CardBox.Children.Add(Grid);
         }
 
-        private void ButtonHandler(Card card, Button button)
+        private void ButtonHandler(Card card, Image cardImage)
         {
             // sets.Add(button);
             Debug.WriteLine("test");
-            button.Background = new ImageBrush(card.Image);
+            cardImage.Source = card.Image;
         }
     }
 }
