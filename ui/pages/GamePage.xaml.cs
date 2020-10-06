@@ -87,6 +87,10 @@ namespace Memory.ui.pages
 
         private void ButtonHandler(Card card, Image cardImage, int index)
         {
+            if (selectedCards.Count >= 1 && selectedCards[0] == index)
+            {
+                return;
+            }
             cardImage.Source = card.Image;
             selectedCards.Add(index);
             if (selectedCards.Count >= 2)
