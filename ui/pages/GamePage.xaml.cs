@@ -22,8 +22,8 @@ namespace Memory.ui.pages
         
         public GamePage()
         {
+            MainWindow.GetMainWindow().activePage = this;
             InitializeComponent();
-            
             ShowCards();
         }
 

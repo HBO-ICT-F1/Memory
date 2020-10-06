@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -19,6 +20,7 @@ namespace Memory.ui
         private readonly Rectangle escapeMenuBg;
         private long escapeMenuDelay;
         public bool escapeMenuToggle;
+        public Page activePage = null;
 
         public MainWindow()
         {
@@ -27,6 +29,7 @@ namespace Memory.ui
             escapeMenuDelay = DateTime.Now.ToFileTime();
             InitializeComponent();
             ChangePage(new MainPage());
+            activePage = new MainPage();
             Height = SystemParameters.PrimaryScreenHeight;
             Width = SystemParameters.PrimaryScreenWidth;
             escapeMenu = new Frame();
@@ -61,7 +64,8 @@ namespace Memory.ui
 
         private void EscapeMenu(object sender, KeyEventArgs e)
         {
-            if (DateTime.Now.ToFileTime() <= escapeMenuDelay) return;
+            if(activePage.Title == null && activePage.Title != "Game") return;
+            if (activePage != new GamePage() && DateTime.Now.ToFileTime() <= escapeMenuDelay) return;
             if (e.Key == Key.Escape) escapeMenuToggle = !escapeMenuToggle;
             DrawEscapeMenu();
             escapeMenuDelay = DateTime.Now.ToFileTime() + 5000000; //0.5S
