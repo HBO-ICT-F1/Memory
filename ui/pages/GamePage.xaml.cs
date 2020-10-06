@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Media;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,14 +24,19 @@ namespace Memory.ui.pages
         public List<int> selectedCards = new List<int>();
         public Dictionary<int, Image> cardImages = new Dictionary<int, Image>();
         private List<Card> cards = new List<Card>();
+        private MediaPlayer player;
         
         public GamePage()
         {
             MainWindow.GetMainWindow().activePage = this;
             InitializeComponent();
-            string[] images = Directory.GetFiles($"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default/cards", "*");
+            var images = Directory.GetFiles($"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default/cards", "*");
             cards = Card.Generate(images);
             ShowCards();
+            
+            player = new MediaPlayer();
+            player.Open(new Uri(($"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default/default.mp3")));
+            player.Play();
         }
 
         private void ShowCards()
