@@ -28,19 +28,13 @@ namespace Memory.ui.pages
         {
             MainWindow.GetMainWindow().activePage = this;
             InitializeComponent();
-            string[] images = Directory.GetFiles($"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default", "*");
+            string[] images = Directory.GetFiles($"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default/cards", "*");
             cards = Card.Generate(images);
             ShowCards();
         }
 
         private void ShowCards()
         {
-            string[] images =
-                Directory.GetFiles(
-                    $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default",
-                    "*");
-            List<Card> cards = Card.Generate(images);
-
             var rows = Math.Sqrt(cards.Count);
             var columns = Math.Sqrt(cards.Count);
             var maxScale = Math.Min(SystemParameters.PrimaryScreenHeight / rows,
@@ -81,10 +75,10 @@ namespace Memory.ui.pages
                     var currentIndex = index;
                     var card = cards[index];
                     image.MouseDown += new MouseButtonEventHandler((sender, e) => {
-                        Image cardImage = sender as Image;
+                        var cardImage = sender as Image;
                         ButtonHandler(card, cardImage, currentIndex);
                     });
-                    image.Source = new BitmapImage(new Uri($"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default.jpg"));
+                    image.Source = new BitmapImage(new Uri($"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default/default.jpg"));
                     cardImages.Add(index, image);
                     Grid.SetRow(image, y);
                     Grid.SetColumn(image, x);
@@ -119,7 +113,7 @@ namespace Memory.ui.pages
                 return;
             }
             await Task.Delay(1000);
-            cardImages[selectedCards[0]].Source = cardImages[selectedCards[1]].Source = new BitmapImage(new Uri($"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default.jpg"));
+            cardImages[selectedCards[0]].Source = cardImages[selectedCards[1]].Source = new BitmapImage(new Uri($"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default/default.jpg"));
         }
     }
 }
