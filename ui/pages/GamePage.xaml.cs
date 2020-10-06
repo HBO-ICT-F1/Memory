@@ -124,6 +124,23 @@ namespace Memory.ui.pages
             cardImages[selectedCards[0]].Source = cardImages[selectedCards[1]].Source =
                 new BitmapImage(new Uri(
                     $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default/default.jpg"));
+            await ComputerAgent();
+        }
+
+        private async Task ComputerAgent()
+        {
+            // // TODO: composer agent here.
+            // var status = false;
+            // if (!status)
+            // {
+            //     await Task.Delay(1000);
+            //     // TODO: turn cards back.
+            //     return;
+            // }
+            //
+            // await Task.Delay(500);
+            // // TODO: remove cards.
+            // await TurnComputerAgent();
         }
     }
 }
