@@ -64,8 +64,8 @@ namespace Memory.ui
 
         private void EscapeMenu(object sender, KeyEventArgs e)
         {
-            if (activePage.Title == null && activePage.Title != "Game") return;
-            if (activePage != new GamePage() && DateTime.Now.ToFileTime() <= escapeMenuDelay) return;
+            if (activePage.Title != "Game" && activePage != new GamePage() &&
+                DateTime.Now.ToFileTime() <= escapeMenuDelay) return;
             if (e.Key == Key.Escape) escapeMenuToggle = !escapeMenuToggle;
             DrawEscapeMenu();
             escapeMenuDelay = DateTime.Now.ToFileTime() + 5000000; //0.5S

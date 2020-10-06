@@ -35,45 +35,45 @@ namespace Memory.ui.pages
                     "*");
             List<Card> cards = Card.Generate(images);
 
-            double rows = Math.Sqrt(cards.Count);
-            double columns = Math.Sqrt(cards.Count);
-            double maxScale = Math.Min(SystemParameters.PrimaryScreenHeight / rows,
+            var rows = Math.Sqrt(cards.Count);
+            var columns = Math.Sqrt(cards.Count);
+            var maxScale = Math.Min(SystemParameters.PrimaryScreenHeight / rows,
                 SystemParameters.PrimaryScreenWidth / columns);
-            double maxScaleSize = Math.Max(cardScaleHeight, cardScaleWidth);
-            int cardHeight = (int) (cardScaleHeight * maxScale / maxScaleSize);
-            int cardWidth = (int) (cardScaleWidth * maxScale / maxScaleSize);
+            var maxScaleSize = Math.Max(cardScaleHeight, cardScaleWidth);
+            var cardHeight = (int) (cardScaleHeight * maxScale / maxScaleSize);
+            var cardWidth = (int) (cardScaleWidth * maxScale / maxScaleSize);
 
-            Grid Grid = new Grid();
-            Grid.Width = cardWidth * columns;
-            Grid.HorizontalAlignment = HorizontalAlignment.Center;
-            Grid.VerticalAlignment = VerticalAlignment.Center;
-
-            for (int i = 0; i < columns; i++)
+            var grid = new Grid
             {
-                ColumnDefinition Column = new ColumnDefinition();
-                Grid.ColumnDefinitions.Add(Column);
+                Width = cardWidth * columns,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center
+            };
+
+            for (var i = 0; i < columns; i++)
+            {
+                var column = new ColumnDefinition();
+                grid.ColumnDefinitions.Add(column);
             }
 
-            for (int i = 0; i < rows; i++)
+            for (var i = 0; i < rows; i++)
             {
-                RowDefinition Row = new RowDefinition();
-                Row.Height = new GridLength(cardHeight);
-                Grid.RowDefinitions.Add(Row);
-                Grid.ShowGridLines = true;
+                var row = new RowDefinition();
+                row.Height = new GridLength(cardHeight);
+                grid.RowDefinitions.Add(row);
+                grid.ShowGridLines = true;
             }
 
-            int index = 0;
-            for (int x = 0; x < columns; x++)
+            var index = 0;
+            for (var x = 0; x < columns; x++)
             {
-                for (int y = 0; y < rows; y++)
+                for (var y = 0; y < rows; y++)
                 {
-                    Image image = new Image();
-                    image.RenderSize = new Size(cardWidth, cardHeight);
-                    image.Stretch = Stretch.Fill;
-                    Card card = cards[index];
+                    var image = new Image {RenderSize = new Size(cardWidth, cardHeight), Stretch = Stretch.Fill};
+                    var card = cards[index];
                     image.MouseDown += new MouseButtonEventHandler((sender, e) =>
                     {
-                        Image cardImage = sender as Image;
+                        var cardImage = sender as Image;
                         ButtonHandler(card, cardImage);
                     });
                     image.Source =
@@ -81,12 +81,12 @@ namespace Memory.ui.pages
                             $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default.jpg"));
                     Grid.SetRow(image, y);
                     Grid.SetColumn(image, x);
-                    Grid.Children.Add(image);
+                    grid.Children.Add(image);
                     index++;
                 }
             }
 
-            CardBox.Children.Add(Grid);
+            CardBox.Children.Add(grid);
         }
 
         private void ButtonHandler(Card card, Image cardImage)
