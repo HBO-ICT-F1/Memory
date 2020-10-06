@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 namespace Memory.ui.pages
@@ -14,24 +13,16 @@ namespace Memory.ui.pages
             InitializeComponent();
         }
 
-        private void Play(object sender, RoutedEventArgs e)
-        {
-            MainWindow.GetMainWindow().ChangePage(new GamePage());
-        }
+        private void Play(object sender, RoutedEventArgs e) =>
+            MainWindow.GetMainWindow().ChangePage(MainWindow.GetMainWindow().gamePage);
 
-        private void Settings(object sender, RoutedEventArgs e)
-        {
-            MainWindow.GetMainWindow().ChangePage(new SettingsPage());
-        }
+        private void Settings(object sender, RoutedEventArgs e) =>
+            MainWindow.GetMainWindow().ChangePage(MainWindow.GetMainWindow().settingsPage);
 
-        private void Scoreboard(object sender, RoutedEventArgs e)
-        {
-            MainWindow.GetMainWindow().ChangePage(new ScoreboardPage());
-        }
+        private void Scoreboard(object sender, RoutedEventArgs e) =>
+            MainWindow.GetMainWindow().ChangePage(MainWindow.GetMainWindow().scoreboardPage);
 
-        private void Quit(object sender, RoutedEventArgs e)
-        {
+        private void Quit(object sender, RoutedEventArgs e) =>
             MainWindow.QuitApplication();
-        }
     }
 }

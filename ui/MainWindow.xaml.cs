@@ -25,21 +25,29 @@ namespace Memory.ui
         public bool escapeMenuToggle;
         private Page activePage;
 
+        public readonly GamePage gamePage = new GamePage();
+        public readonly MainPage mainPage = new MainPage();
+        public readonly ScoreboardPage scoreboardPage = new ScoreboardPage();
+        public readonly SettingsPage settingsPage = new SettingsPage();
+
         public MainWindow()
         {
             mainWindow = this;
             escapeMenuToggle = false;
             escapeMenuDelay = DateTime.Now.ToFileTime();
             InitializeComponent();
-            ChangePage(new MainPage());
-            activePage = new MainPage();
+            ChangePage(mainPage);
+            activePage = mainPage;
+
             Height = SystemParameters.PrimaryScreenHeight;
             Width = SystemParameters.PrimaryScreenWidth;
+
             escapeMenu = new Frame {Content = new EscapeMenuPage(), Width = Width / 2, Height = Height / 2};
             escapeMenuBg = new Rectangle
             {
                 Height = Height, Width = Width, Fill = new SolidColorBrush(Color.FromArgb(150, 35, 35, 35))
             };
+
             var backGround = new ImageBrush();
             var image = new Image
             {
@@ -47,23 +55,19 @@ namespace Memory.ui
             };
             backGround.ImageSource = image.Source;
             mainWindow.Background = backGround;
+            
             player = new MediaPlayer();
             player.Open(new Uri(
                 ($"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default/default.mp3"
                 )));
+            
             player.Volume = 0.2;
             player.Play();
         }
 
-        public static MainWindow GetMainWindow()
-        {
-            return mainWindow;
-        }
+        public static MainWindow GetMainWindow() => mainWindow;
 
-        public static void QuitApplication()
-        {
-            Environment.Exit(0);
-        }
+        public static void QuitApplication() => Environment.Exit(0);
 
         public void ChangePage(Page page)
         {
@@ -73,9 +77,9 @@ namespace Memory.ui
 
         private void EscapeMenu(object sender, KeyEventArgs e)
         {
-            Debug.WriteLine(activePage.Title);
             if (activePage.Title != "Game" || DateTime.Now.ToFileTime() <= escapeMenuDelay) return;
             if (e.Key == Key.Escape) escapeMenuToggle = !escapeMenuToggle;
+
             DrawEscapeMenu();
             escapeMenuDelay = DateTime.Now.ToFileTime() + 5000000; //0.5S
         }

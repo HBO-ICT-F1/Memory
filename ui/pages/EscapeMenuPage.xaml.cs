@@ -13,27 +13,21 @@ namespace Memory.ui.pages
             InitializeComponent();
         }
 
-        private void Continue(object sender, RoutedEventArgs routedEventArgs)
-        {
-            CloseMenu();
-        }
+        private void Continue(object sender, RoutedEventArgs routedEventArgs) => CloseMenu();
 
         private void Settings(object sender, RoutedEventArgs routedEventArgs)
         {
-            MainWindow.ChangePage(new MainPage());
+            MainWindow.ChangePage(MainWindow.settingsPage);
             CloseMenu();
         }
 
         private void Menu(object sender, RoutedEventArgs routedEventArgs)
         {
-            MainWindow.ChangePage(new MainPage());
+            MainWindow.ChangePage(MainWindow.mainPage);
             CloseMenu();
         }
 
-        private void Quit(object sender, RoutedEventArgs e)
-        {
-            MainWindow.QuitApplication();
-        }
+        private void Quit(object sender, RoutedEventArgs e) => MainWindow.QuitApplication();
 
         private void CloseMenu()
         {

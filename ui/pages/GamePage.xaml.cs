@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Media;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Memory.card;
-using Path = System.IO.Path;
 
 namespace Memory.ui.pages
 {
@@ -28,10 +25,12 @@ namespace Memory.ui.pages
         public GamePage()
         {
             InitializeComponent();
+
             var images =
                 Directory.GetFiles(
-                    $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default/cards",
+                    $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default",
                     "*");
+
             cards = Card.Generate(images);
             ShowCards();
         }
@@ -40,9 +39,11 @@ namespace Memory.ui.pages
         {
             var rows = Math.Sqrt(cards.Count);
             var columns = Math.Sqrt(cards.Count);
+
             var maxScale = Math.Min(SystemParameters.PrimaryScreenHeight / rows,
                 SystemParameters.PrimaryScreenWidth / columns);
             var maxScaleSize = Math.Max(cardScaleHeight, cardScaleWidth);
+
             var cardHeight = (int) (cardScaleHeight * maxScale / maxScaleSize);
             var cardWidth = (int) (cardScaleWidth * maxScale / maxScaleSize);
 
@@ -72,19 +73,22 @@ namespace Memory.ui.pages
                     var image = new Image();
                     image.RenderSize = new Size(cardWidth, cardHeight);
                     image.Stretch = Stretch.Fill;
+
                     var currentIndex = index;
                     var card = cards[index];
-                    image.MouseDown += new MouseButtonEventHandler((sender, e) =>
+                    image.MouseDown += (sender, e) =>
                     {
                         var cardImage = sender as Image;
                         ButtonHandler(card, cardImage, currentIndex);
-                    });
+                    };
+
                     image.Source =
                         new BitmapImage(new Uri(
                             $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default/default.jpg"));
                     cardImages.Add(index, image);
                     Grid.SetRow(image, y);
                     Grid.SetColumn(image, x);
+
                     grid.Children.Add(image);
                     index++;
                 }
@@ -98,6 +102,7 @@ namespace Memory.ui.pages
             if (selectedCards.Count >= 1 && selectedCards[0] == index || selectedCards.Count == 2) return;
             cardImage.Source = card.Image;
             selectedCards.Add(index);
+
             if (selectedCards.Count < 2) return;
             await CheckCards();
             selectedCards.Clear();
@@ -111,6 +116,7 @@ namespace Memory.ui.pages
                 await Task.Delay(500);
                 grid.Children.Remove(cardImages[selectedCards[0]]);
                 cardImages.Remove(selectedCards[0]);
+
                 grid.Children.Remove(cardImages[selectedCards[1]]);
                 cardImages.Remove(selectedCards[1]);
                 return;
