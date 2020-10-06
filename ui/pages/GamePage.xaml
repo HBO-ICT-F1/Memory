@@ -4,7 +4,5 @@
       Background="Transparent"
       Title="Game">
 
-    <Grid>
-        <Grid x:Name="CardBox" />
-    </Grid>
+    <Grid x:Name="CardBox"></Grid>
 </Page>
