@@ -26,7 +26,6 @@ namespace Memory.ui.pages
 
         private void Scoreboard(object sender, RoutedEventArgs e)
         {
-            Debug.WriteLine("Trigger");
             MainWindow.GetMainWindow().ChangePage(new ScoreboardPage());
         }
 

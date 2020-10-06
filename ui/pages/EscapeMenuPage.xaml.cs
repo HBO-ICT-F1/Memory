@@ -5,7 +5,7 @@ namespace Memory.ui.pages
 {
     public partial class EscapeMenuPage : Page
     {
-        private MainWindow mainWindow;
+        private readonly MainWindow mainWindow;
 
         public EscapeMenuPage()
         {

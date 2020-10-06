@@ -20,7 +20,7 @@ namespace Memory.ui
         private readonly Rectangle escapeMenuBg;
         private long escapeMenuDelay;
         public bool escapeMenuToggle;
-        public Page activePage = null;
+        public Page activePage;
 
         public MainWindow()
         {
@@ -32,19 +32,18 @@ namespace Memory.ui
             activePage = new MainPage();
             Height = SystemParameters.PrimaryScreenHeight;
             Width = SystemParameters.PrimaryScreenWidth;
-            escapeMenu = new Frame();
-            escapeMenu.Content = new EscapeMenuPage();
-            escapeMenu.Width = Width / 2;
-            escapeMenu.Height = Height / 2;
-            escapeMenuBg = new Rectangle();
-            escapeMenuBg.Height = Height;
-            escapeMenuBg.Width = Width;
-            escapeMenuBg.Fill = new SolidColorBrush(Color.FromArgb(150, 35, 35, 35));
-            var myBrush = new ImageBrush();
-            var image = new Image();
-            image.Source = new BitmapImage(new Uri("https://miro.medium.com/max/10514/1*TG8yT-bltiG0FcRpx3YkRA.jpeg"));
-            myBrush.ImageSource = image.Source;
-            mainWindow.Background = myBrush;
+            escapeMenu = new Frame {Content = new EscapeMenuPage(), Width = Width / 2, Height = Height / 2};
+            escapeMenuBg = new Rectangle
+            {
+                Height = Height, Width = Width, Fill = new SolidColorBrush(Color.FromArgb(150, 35, 35, 35))
+            };
+            var backGround = new ImageBrush();
+            var image = new Image
+            {
+                Source = new BitmapImage(new Uri("https://miro.medium.com/max/10514/1*TG8yT-bltiG0FcRpx3YkRA.jpeg"))
+            };
+            backGround.ImageSource = image.Source;
+            mainWindow.Background = backGround;
         }
 
         public static MainWindow GetMainWindow()
@@ -64,8 +63,7 @@ namespace Memory.ui
 
         private void EscapeMenu(object sender, KeyEventArgs e)
         {
-            if (activePage.Title != "Game" && activePage != new GamePage() &&
-                DateTime.Now.ToFileTime() <= escapeMenuDelay) return;
+            if (activePage.Title != "Game" && DateTime.Now.ToFileTime() <= escapeMenuDelay) return;
             if (e.Key == Key.Escape) escapeMenuToggle = !escapeMenuToggle;
             DrawEscapeMenu();
             escapeMenuDelay = DateTime.Now.ToFileTime() + 5000000; //0.5S
