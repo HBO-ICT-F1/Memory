@@ -25,19 +25,22 @@ namespace Memory.ui
         public bool escapeMenuToggle;
         private Page activePage;
 
-        public readonly GamePage gamePage = new GamePage();
-        public readonly MainPage mainPage = new MainPage();
-        public readonly ScoreboardPage scoreboardPage = new ScoreboardPage();
-        public readonly SettingsPage settingsPage = new SettingsPage();
+        public readonly MainPage mainPage;
+        public readonly ScoreboardPage scoreboardPage;
+        public readonly SettingsPage settingsPage;
 
         public MainWindow()
         {
             mainWindow = this;
             escapeMenuToggle = false;
             escapeMenuDelay = DateTime.Now.ToFileTime();
+            
+            mainPage = new MainPage();
+            scoreboardPage = new ScoreboardPage();
+            settingsPage = new SettingsPage();
+            
             InitializeComponent();
             ChangePage(mainPage);
-            activePage = mainPage;
 
             Height = SystemParameters.PrimaryScreenHeight;
             Width = SystemParameters.PrimaryScreenWidth;
