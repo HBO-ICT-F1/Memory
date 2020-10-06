@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -7,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Memory.ui.pages;
+using Path = System.IO.Path;
 
 namespace Memory.ui
 {
@@ -17,10 +19,11 @@ namespace Memory.ui
     {
         private static MainWindow mainWindow;
         private readonly Frame escapeMenu;
+        private MediaPlayer player;
         private readonly Rectangle escapeMenuBg;
         private long escapeMenuDelay;
         public bool escapeMenuToggle;
-        public Page activePage;
+        private Page activePage;
 
         public MainWindow()
         {
@@ -44,6 +47,11 @@ namespace Memory.ui
             };
             backGround.ImageSource = image.Source;
             mainWindow.Background = backGround;
+            player = new MediaPlayer();
+            player.Open(new Uri(
+                ($"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default/default.mp3"
+                )));
+            player.Play();
         }
 
         public static MainWindow GetMainWindow()
@@ -58,12 +66,14 @@ namespace Memory.ui
 
         public void ChangePage(Page page)
         {
+            activePage = page;
             UiFrame.Content = page;
         }
 
         private void EscapeMenu(object sender, KeyEventArgs e)
         {
-            if (activePage.Title != "Game" && DateTime.Now.ToFileTime() <= escapeMenuDelay) return;
+            Debug.WriteLine(activePage.Title);
+            if (activePage.Title != "Game" || DateTime.Now.ToFileTime() <= escapeMenuDelay) return;
             if (e.Key == Key.Escape) escapeMenuToggle = !escapeMenuToggle;
             DrawEscapeMenu();
             escapeMenuDelay = DateTime.Now.ToFileTime() + 5000000; //0.5S

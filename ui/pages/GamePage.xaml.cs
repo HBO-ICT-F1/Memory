@@ -19,16 +19,14 @@ namespace Memory.ui.pages
     public partial class GamePage : Page
     {
         public double cardScaleHeight = 2;
-        public double cardScaleWidth = 1.5;
+        public double cardScaleWidth = 2;
         public Grid grid = new Grid();
         public List<int> selectedCards = new List<int>();
         public Dictionary<int, Image> cardImages = new Dictionary<int, Image>();
         private List<Card> cards = new List<Card>();
-        private MediaPlayer player;
 
         public GamePage()
         {
-            MainWindow.GetMainWindow().activePage = this;
             InitializeComponent();
             var images =
                 Directory.GetFiles(
@@ -36,12 +34,6 @@ namespace Memory.ui.pages
                     "*");
             cards = Card.Generate(images);
             ShowCards();
-
-            player = new MediaPlayer();
-            player.Open(new Uri(
-                ($"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default/default.mp3"
-                )));
-            player.Play();
         }
 
         private void ShowCards()
