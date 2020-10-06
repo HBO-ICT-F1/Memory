@@ -20,6 +20,7 @@ namespace Memory.ui.pages
     {
         public double cardScaleHeight = 2;
         public double cardScaleWidth = 1.5;
+        public Grid Grid = new Grid();
         public List<int> selectedCards = new List<int>();
         public Dictionary<int, Image> cardImages = new Dictionary<int, Image>();
         private List<Card> cards = new List<Card>();
@@ -42,7 +43,6 @@ namespace Memory.ui.pages
             int cardHeight = (int)(cardScaleHeight * maxScale / maxScaleSize);
             int cardWidth = (int)(cardScaleWidth * maxScale / maxScaleSize);
             
-            Grid Grid = new Grid();
             Grid.Width = cardWidth * columns;
             Grid.HorizontalAlignment = HorizontalAlignment.Center;
             Grid.VerticalAlignment = VerticalAlignment.Center;
@@ -101,6 +101,10 @@ namespace Memory.ui.pages
             if (cards[selectedCards[0]].Type == cards[selectedCards[1]].Type)
             {
                 // TODO: increment score
+                cardImages.Remove(selectedCards[0]);
+                Grid.Children.Remove(cardImages[selectedCards[0]]);
+                cardImages.Remove(selectedCards[1]);
+                Grid.Children.Remove(cardImages[selectedCards[1]]);
                 return;
             }
             cardImages[selectedCards[0]].Source = cardImages[selectedCards[1]].Source = new BitmapImage(new Uri($"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default.jpg"));
