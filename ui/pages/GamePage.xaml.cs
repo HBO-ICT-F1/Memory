@@ -11,16 +11,16 @@ using Memory.card;
 namespace Memory.ui.pages
 {
     /// <summary>
-    /// Interaction logic for GamePage.xaml
+    ///     Interaction logic for GamePage.xaml
     /// </summary>
     public partial class GamePage : Page
     {
+        private readonly List<Card> cards = new List<Card>();
+        public Dictionary<int, Image> cardImages = new Dictionary<int, Image>();
         public double cardScaleHeight = 2;
         public double cardScaleWidth = 2;
         public Grid grid = new Grid();
         public List<int> selectedCards = new List<int>();
-        public Dictionary<int, Image> cardImages = new Dictionary<int, Image>();
-        private List<Card> cards = new List<Card>();
 
         public GamePage()
         {
@@ -28,7 +28,7 @@ namespace Memory.ui.pages
 
             var images =
                 Directory.GetFiles(
-                    $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default",
+                    $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default/cards",
                     "*");
 
             cards = Card.Generate(images);
@@ -67,31 +67,29 @@ namespace Memory.ui.pages
 
             var index = 0;
             for (var x = 0; x < columns; x++)
+            for (var y = 0; y < rows; y++)
             {
-                for (var y = 0; y < rows; y++)
+                var image = new Image();
+                image.RenderSize = new Size(cardWidth, cardHeight);
+                image.Stretch = Stretch.Fill;
+
+                var currentIndex = index;
+                var card = cards[index];
+                image.MouseDown += (sender, e) =>
                 {
-                    var image = new Image();
-                    image.RenderSize = new Size(cardWidth, cardHeight);
-                    image.Stretch = Stretch.Fill;
+                    var cardImage = sender as Image;
+                    ButtonHandler(card, cardImage, currentIndex);
+                };
 
-                    var currentIndex = index;
-                    var card = cards[index];
-                    image.MouseDown += (sender, e) =>
-                    {
-                        var cardImage = sender as Image;
-                        ButtonHandler(card, cardImage, currentIndex);
-                    };
+                image.Source =
+                    new BitmapImage(new Uri(
+                        $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default/default.jpg"));
+                cardImages.Add(index, image);
+                Grid.SetRow(image, y);
+                Grid.SetColumn(image, x);
 
-                    image.Source =
-                        new BitmapImage(new Uri(
-                            $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default/default.jpg"));
-                    cardImages.Add(index, image);
-                    Grid.SetRow(image, y);
-                    Grid.SetColumn(image, x);
-
-                    grid.Children.Add(image);
-                    index++;
-                }
+                grid.Children.Add(image);
+                index++;
             }
 
             CardBox.Children.Add(grid);
