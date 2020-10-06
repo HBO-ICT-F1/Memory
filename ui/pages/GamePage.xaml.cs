@@ -19,7 +19,7 @@ namespace Memory.ui.pages
     {
         public double cardScaleHeight = 2;
         public double cardScaleWidth = 1.5;
-        
+
         public GamePage()
         {
             MainWindow.GetMainWindow().activePage = this;
@@ -29,16 +29,20 @@ namespace Memory.ui.pages
 
         private void ShowCards()
         {
-            string[] images = Directory.GetFiles($"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default", "*");
+            string[] images =
+                Directory.GetFiles(
+                    $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default",
+                    "*");
             List<Card> cards = Card.Generate(images);
 
             double rows = Math.Sqrt(cards.Count);
             double columns = Math.Sqrt(cards.Count);
-            double maxScale = Math.Min(SystemParameters.PrimaryScreenHeight / rows, SystemParameters.PrimaryScreenWidth / columns);
+            double maxScale = Math.Min(SystemParameters.PrimaryScreenHeight / rows,
+                SystemParameters.PrimaryScreenWidth / columns);
             double maxScaleSize = Math.Max(cardScaleHeight, cardScaleWidth);
-            int cardHeight = (int)(cardScaleHeight * maxScale / maxScaleSize);
-            int cardWidth = (int)(cardScaleWidth * maxScale / maxScaleSize);
-            
+            int cardHeight = (int) (cardScaleHeight * maxScale / maxScaleSize);
+            int cardWidth = (int) (cardScaleWidth * maxScale / maxScaleSize);
+
             Grid Grid = new Grid();
             Grid.Width = cardWidth * columns;
             Grid.HorizontalAlignment = HorizontalAlignment.Center;
@@ -49,6 +53,7 @@ namespace Memory.ui.pages
                 ColumnDefinition Column = new ColumnDefinition();
                 Grid.ColumnDefinitions.Add(Column);
             }
+
             for (int i = 0; i < rows; i++)
             {
                 RowDefinition Row = new RowDefinition();
@@ -66,17 +71,21 @@ namespace Memory.ui.pages
                     image.RenderSize = new Size(cardWidth, cardHeight);
                     image.Stretch = Stretch.Fill;
                     Card card = cards[index];
-                    image.MouseDown += new MouseButtonEventHandler((sender, e) => {
+                    image.MouseDown += new MouseButtonEventHandler((sender, e) =>
+                    {
                         Image cardImage = sender as Image;
                         ButtonHandler(card, cardImage);
                     });
-                    image.Source = new BitmapImage(new Uri($"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default.jpg"));
+                    image.Source =
+                        new BitmapImage(new Uri(
+                            $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default.jpg"));
                     Grid.SetRow(image, y);
                     Grid.SetColumn(image, x);
                     Grid.Children.Add(image);
                     index++;
                 }
             }
+
             CardBox.Children.Add(Grid);
         }
 

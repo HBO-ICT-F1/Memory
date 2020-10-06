@@ -6,6 +6,7 @@ namespace Memory.ui.pages
     public partial class EscapeMenuPage : Page
     {
         private MainWindow mainWindow;
+
         public EscapeMenuPage()
         {
             mainWindow = MainWindow.GetMainWindow();
@@ -16,19 +17,19 @@ namespace Memory.ui.pages
         {
             CloseMenu();
         }
-        
+
         private void Settings(object sender, RoutedEventArgs routedEventArgs)
         {
             mainWindow.ChangePage(new MainPage());
             CloseMenu();
         }
-        
+
         private void Menu(object sender, RoutedEventArgs routedEventArgs)
         {
             mainWindow.ChangePage(new MainPage());
             CloseMenu();
         }
-        
+
         private void Quit(object sender, RoutedEventArgs e)
         {
             MainWindow.QuitApplication();
