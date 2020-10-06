@@ -27,7 +27,6 @@ namespace Memory.ui.pages
 
         public GamePage()
         {
-            MainWindow.GetMainWindow().activePage = this;
             InitializeComponent();
             var images = Directory.GetFiles($"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default/cards", "*");
             cards = Card.Generate(images);

@@ -23,7 +23,7 @@ namespace Memory.ui
         private readonly Rectangle escapeMenuBg;
         private long escapeMenuDelay;
         public bool escapeMenuToggle;
-        public Page activePage;
+        private Page activePage;
 
         public MainWindow()
         {
@@ -66,12 +66,14 @@ namespace Memory.ui
 
         public void ChangePage(Page page)
         {
+            activePage = page;
             UiFrame.Content = page;
         }
 
         private void EscapeMenu(object sender, KeyEventArgs e)
         {
-            if (activePage.Title != "Game" && DateTime.Now.ToFileTime() <= escapeMenuDelay) return;
+            Debug.WriteLine(activePage.Title);
+            if (activePage.Title != "Game" || DateTime.Now.ToFileTime() <= escapeMenuDelay) return;
             if (e.Key == Key.Escape) escapeMenuToggle = !escapeMenuToggle;
             DrawEscapeMenu();
             escapeMenuDelay = DateTime.Now.ToFileTime() + 5000000; //0.5S
