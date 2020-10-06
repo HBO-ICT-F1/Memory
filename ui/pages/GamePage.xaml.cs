@@ -20,22 +20,27 @@ namespace Memory.ui.pages
     {
         public double cardScaleHeight = 2;
         public double cardScaleWidth = 1.5;
-        public Grid Grid = new Grid();
+        public Grid grid = new Grid();
         public List<int> selectedCards = new List<int>();
         public Dictionary<int, Image> cardImages = new Dictionary<int, Image>();
         private List<Card> cards = new List<Card>();
         private MediaPlayer player;
-        
+
         public GamePage()
         {
             MainWindow.GetMainWindow().activePage = this;
             InitializeComponent();
-            var images = Directory.GetFiles($"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default/cards", "*");
+            var images =
+                Directory.GetFiles(
+                    $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default/cards",
+                    "*");
             cards = Card.Generate(images);
             ShowCards();
-            
+
             player = new MediaPlayer();
-            player.Open(new Uri(($"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default/default.mp3")));
+            player.Open(new Uri(
+                ($"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default/default.mp3"
+                )));
             player.Play();
         }
 
@@ -49,12 +54,9 @@ namespace Memory.ui.pages
             var cardHeight = (int) (cardScaleHeight * maxScale / maxScaleSize);
             var cardWidth = (int) (cardScaleWidth * maxScale / maxScaleSize);
 
-            var grid = new Grid
-            {
-                Width = cardWidth * columns,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                VerticalAlignment = VerticalAlignment.Center
-            };
+            grid.Width = cardWidth * columns;
+            grid.HorizontalAlignment = HorizontalAlignment.Center;
+            grid.VerticalAlignment = VerticalAlignment.Center;
 
             for (var i = 0; i < columns; i++)
             {
@@ -80,11 +82,14 @@ namespace Memory.ui.pages
                     image.Stretch = Stretch.Fill;
                     var currentIndex = index;
                     var card = cards[index];
-                    image.MouseDown += new MouseButtonEventHandler((sender, e) => {
+                    image.MouseDown += new MouseButtonEventHandler((sender, e) =>
+                    {
                         var cardImage = sender as Image;
                         ButtonHandler(card, cardImage, currentIndex);
                     });
-                    image.Source = new BitmapImage(new Uri($"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default/default.jpg"));
+                    image.Source =
+                        new BitmapImage(new Uri(
+                            $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default/default.jpg"));
                     cardImages.Add(index, image);
                     Grid.SetRow(image, y);
                     Grid.SetColumn(image, x);
@@ -112,14 +117,17 @@ namespace Memory.ui.pages
             {
                 // TODO: increment score
                 await Task.Delay(500);
-                Grid.Children.Remove(cardImages[selectedCards[0]]);
+                grid.Children.Remove(cardImages[selectedCards[0]]);
                 cardImages.Remove(selectedCards[0]);
-                Grid.Children.Remove(cardImages[selectedCards[1]]);
+                grid.Children.Remove(cardImages[selectedCards[1]]);
                 cardImages.Remove(selectedCards[1]);
                 return;
             }
+
             await Task.Delay(1000);
-            cardImages[selectedCards[0]].Source = cardImages[selectedCards[1]].Source = new BitmapImage(new Uri($"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default/default.jpg"));
+            cardImages[selectedCards[0]].Source = cardImages[selectedCards[1]].Source =
+                new BitmapImage(new Uri(
+                    $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default/default.jpg"));
         }
     }
 }
