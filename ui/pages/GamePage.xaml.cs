@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -35,7 +34,6 @@ namespace Memory.ui.pages
 
         private void ShowCards()
         {
-
             double rows = Math.Sqrt(cards.Count);
             double columns = Math.Sqrt(cards.Count);
             double maxScale = Math.Min(SystemParameters.PrimaryScreenHeight / rows, SystemParameters.PrimaryScreenWidth / columns);
@@ -85,32 +83,29 @@ namespace Memory.ui.pages
             CardBox.Children.Add(Grid);
         }
 
-        private void ButtonHandler(Card card, Image cardImage, int index)
+        private async void ButtonHandler(Card card, Image cardImage, int index)
         {
-            if (selectedCards.Count >= 1 && selectedCards[0] == index)
-            {
-                return;
-            }
+            if (selectedCards.Count >= 1 && selectedCards[0] == index || selectedCards.Count == 2) return;
             cardImage.Source = card.Image;
             selectedCards.Add(index);
-            if (selectedCards.Count >= 2)
-            {
-                CheckCards();
-                selectedCards.Clear();
-            }
+            if (selectedCards.Count < 2) return;
+            await CheckCards();
+            selectedCards.Clear();
         }
 
-        private void CheckCards()
+        private async Task CheckCards()
         {
             if (cards[selectedCards[0]].Type == cards[selectedCards[1]].Type)
             {
                 // TODO: increment score
-                cardImages.Remove(selectedCards[0]);
+                await Task.Delay(500);
                 Grid.Children.Remove(cardImages[selectedCards[0]]);
-                cardImages.Remove(selectedCards[1]);
+                cardImages.Remove(selectedCards[0]);
                 Grid.Children.Remove(cardImages[selectedCards[1]]);
+                cardImages.Remove(selectedCards[1]);
                 return;
             }
+            await Task.Delay(1000);
             cardImages[selectedCards[0]].Source = cardImages[selectedCards[1]].Source = new BitmapImage(new Uri($"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default.jpg"));
         }
     }
