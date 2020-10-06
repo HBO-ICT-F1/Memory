@@ -51,6 +51,7 @@ namespace Memory.ui
             player.Open(new Uri(
                 ($"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default/default.mp3"
                 )));
+            player.Volume = 0.2;
             player.Play();
         }
 
