@@ -7,11 +7,22 @@ namespace Memory.utils
     /// </summary>
     public class SQLite
     {
-        private readonly string _name;
+        private readonly SqliteOpenMode _mode;
+        private readonly string _name, _password;
 
-        public SQLite(string name)
+        public SQLite(string name) : this(name, SqliteOpenMode.ReadWriteCreate, string.Empty)
+        {
+        }
+
+        public SQLite(string name, SqliteOpenMode mode) : this(name, mode, string.Empty)
+        {
+        }
+
+        public SQLite(string name, SqliteOpenMode mode, string password)
         {
             _name = name;
+            _mode = mode;
+            _password = password;
         }
 
         /// <summary>
@@ -19,6 +30,7 @@ namespace Memory.utils
         /// </summary>
         /// <param name="query">The command to execute</param>
         /// <returns>The response from the database</returns>
+        /// <exception cref="SqliteException">An SQLite error occured during execution</exception>
         public SqliteDataReader Query(string query)
         {
             using (var connection = Connect())
@@ -35,7 +47,14 @@ namespace Memory.utils
         /// <returns>The SQLiteConnection that was established</returns>
         private SqliteConnection Connect()
         {
-            var connection = new SqliteConnection($"Data Source={_name}");
+            var connectionStringBuilder = new SqliteConnectionStringBuilder
+            {
+                DataSource = _name,
+                Mode = _mode,
+                Password = _password
+            };
+
+            var connection = new SqliteConnection(connectionStringBuilder.ToString());
             connection.Open();
             return connection;
         }
