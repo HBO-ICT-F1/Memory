@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Documents;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Memory.card;
@@ -17,27 +15,27 @@ namespace Memory.ui.pages
     /// </summary>
     public partial class GamePage : Page
     {
-        private readonly List<Card> cards = new List<Card>();
-        public Dictionary<int, int> shownCards = new Dictionary<int, int>();
+        private readonly List<Card> _cards = new List<Card>();
         public Dictionary<int, Image> cardImages = new Dictionary<int, Image>();
-        public double cardScaleHeight = 2;
-        public double cardScaleWidth = 2;
+        public double CardScaleHeight = 2;
+        public double CardScaleWidth = 2;
+        public Uri defaultCardImage;
         public Grid grid = new Grid();
         public Dictionary<int, Image> images = new Dictionary<int, Image>();
         public List<int> selectedCards = new List<int>();
-        public Uri defaultCardImage;
+        public Dictionary<int, int> shownCards = new Dictionary<int, int>();
 
         public GamePage()
         {
             InitializeComponent();
-
+            var theme = MainWindow.GetMainWindow().theme;
             var images =
                 Directory.GetFiles(
-                    $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default/cards",
+                    $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/{theme}/cards",
                     "*");
             defaultCardImage =
                 new Uri(
-                    $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default/default.jpg");
+                    $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/{theme}/default.jpg");
 
             _cards = Card.Generate(images);
             ShowCards();
@@ -108,10 +106,7 @@ namespace Memory.ui.pages
             cardImage.Source = card.image;
             selectedCards.Add(index);
 
-            if (!shownCards.ContainsKey(index))
-            {
-                shownCards.Add(index, card.Type);
-            }
+            if (!shownCards.ContainsKey(index)) shownCards.Add(index, card.type);
 
             if (selectedCards.Count < 2) return;
             await CheckCards();
@@ -145,7 +140,6 @@ namespace Memory.ui.pages
         {
             var typeCount = new Dictionary<int, List<int>>();
             foreach (var card in shownCards)
-            {
                 if (!typeCount.ContainsKey(card.Value))
                 {
                     var cards = new List<int>();
@@ -156,17 +150,14 @@ namespace Memory.ui.pages
                 {
                     typeCount[card.Value].Add(card.Key);
                 }
-            }
 
             int? typeIndex = null;
             foreach (var type in typeCount)
-            {
                 if (type.Value.Count == 2)
                 {
                     typeIndex = type.Key;
                     break;
                 }
-            }
 
             int cardOne;
             int cardTwo;
@@ -175,22 +166,16 @@ namespace Memory.ui.pages
                 cardOne = await PickRandomKey();
                 cardTwo = await PickRandomKey(cardOne);
 
-                if (!shownCards.ContainsKey(cardOne))
-                {
-                    shownCards.Add(cardOne, cards[cardOne].Type);
-                }
+                if (!shownCards.ContainsKey(cardOne)) shownCards.Add(cardOne, _cards[cardOne].type);
 
-                if (!shownCards.ContainsKey(cardTwo))
-                {
-                    shownCards.Add(cardTwo, cards[cardTwo].Type);
-                }
+                if (!shownCards.ContainsKey(cardTwo)) shownCards.Add(cardTwo, _cards[cardTwo].type);
 
                 await Task.Delay(1000);
-                cardImages[cardOne].Source = cards[cardOne].Image;
+                cardImages[cardOne].Source = _cards[cardOne].image;
                 await Task.Delay(1000);
-                cardImages[cardTwo].Source = cards[cardTwo].Image;
+                cardImages[cardTwo].Source = _cards[cardTwo].image;
                 await Task.Delay(1000);
-                if (cards[cardOne].Type != cards[cardTwo].Type)
+                if (_cards[cardOne].type != _cards[cardTwo].type)
                 {
                     cardImages[cardOne].Source = cardImages[cardTwo].Source =
                         new BitmapImage(defaultCardImage);
@@ -202,23 +187,17 @@ namespace Memory.ui.pages
                 cardOne = typeCount[(int) typeIndex][0];
                 cardTwo = typeCount[(int) typeIndex][1];
                 await Task.Delay(1000);
-                cardImages[typeCount[(int) typeIndex][0]].Source = cards[typeCount[(int) typeIndex][0]].Image;
+                cardImages[typeCount[(int) typeIndex][0]].Source = _cards[typeCount[(int) typeIndex][0]].image;
                 await Task.Delay(1000);
-                cardImages[typeCount[(int) typeIndex][1]].Source = cards[typeCount[(int) typeIndex][1]].Image;
+                cardImages[typeCount[(int) typeIndex][1]].Source = _cards[typeCount[(int) typeIndex][1]].image;
                 await Task.Delay(500);
             }
 
             // TODO: increment score
 
-            if (shownCards.ContainsKey(cardOne))
-            {
-                shownCards.Remove(cardOne);
-            }
+            if (shownCards.ContainsKey(cardOne)) shownCards.Remove(cardOne);
 
-            if (shownCards.ContainsKey(cardTwo))
-            {
-                shownCards.Remove(cardTwo);
-            }
+            if (shownCards.ContainsKey(cardTwo)) shownCards.Remove(cardTwo);
 
             grid.Children.Remove(cardImages[cardOne]);
             cardImages.Remove(cardOne);
@@ -228,17 +207,14 @@ namespace Memory.ui.pages
 
             shownCards.Remove(cardOne);
             shownCards.Remove(cardTwo);
-            if (grid.Children.Count > 0)
-            {
-                await ComputerAgent();
-            }
+            if (grid.Children.Count > 0) await ComputerAgent();
         }
 
         private async Task<int> PickRandomKey(int? retryKey = null)
         {
-            Random rand = new Random();
+            var rand = new Random();
             var keyList = new List<int>(cardImages.Keys);
-            int key = keyList[rand.Next(keyList.Count)];
+            var key = keyList[rand.Next(keyList.Count)];
             if (key == retryKey)
             {
                 await Task.Delay(10);

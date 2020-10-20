@@ -26,13 +26,15 @@ namespace Memory.ui
         private Page _activePage;
         private long _escapeMenuDelay;
         public bool escapeMenuToggle;
+        public MediaPlayer player = new MediaPlayer();
+        public string theme = "default";
 
         public MainWindow()
         {
             mainWindow = this;
             escapeMenuToggle = false;
             _escapeMenuDelay = DateTime.Now.ToFileTime();
-
+            theme = "dogs";
             mainPage = new MainPage();
             scoreboardPage = new ScoreboardPage();
             settingsPage = new SettingsPage();
@@ -52,14 +54,15 @@ namespace Memory.ui
             var backGround = new ImageBrush();
             var image = new Image
             {
-                Source = new BitmapImage(new Uri("https://miro.medium.com/max/10514/1*TG8yT-bltiG0FcRpx3YkRA.jpeg"))
+                Source = new BitmapImage(new Uri(
+                    $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/{theme}/background.jpg")
+                )
             };
             backGround.ImageSource = image.Source;
             mainWindow.Background = backGround;
 
-            var player = new MediaPlayer();
             player.Open(new Uri(
-                $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default/default.mp3"));
+                $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/{theme}/default.mp3"));
 
             player.Volume = 0.2;
             player.Play();
