@@ -119,8 +119,8 @@ namespace Memory.ui.pages
             {
                 // TODO: increment score
                 await Task.Delay(500);
-                grid.Children.Remove(images[selectedCards[0]]);
-                images.Remove(selectedCards[0]);
+                grid.Children.Remove(cardImages[selectedCards[0]]);
+                cardImages.Remove(selectedCards[0]);
 
                 grid.Children.Remove(cardImages[selectedCards[1]]);
                 cardImages.Remove(selectedCards[1]);
