@@ -13,16 +13,24 @@ namespace Memory.ui.pages
             InitializeComponent();
         }
 
-        private void Play(object sender, RoutedEventArgs e) =>
+        private void Play(object sender, RoutedEventArgs e)
+        {
             MainWindow.GetMainWindow().ChangePage(new GamePage());
+        }
 
-        private void Settings(object sender, RoutedEventArgs e) =>
+        private void Settings(object sender, RoutedEventArgs e)
+        {
             MainWindow.GetMainWindow().ChangePage(MainWindow.GetMainWindow().settingsPage);
+        }
 
-        private void Scoreboard(object sender, RoutedEventArgs e) =>
+        private void Scoreboard(object sender, RoutedEventArgs e)
+        {
             MainWindow.GetMainWindow().ChangePage(MainWindow.GetMainWindow().scoreboardPage);
+        }
 
-        private void Quit(object sender, RoutedEventArgs e) =>
+        private void Quit(object sender, RoutedEventArgs e)
+        {
             MainWindow.QuitApplication();
+        }
     }
 }

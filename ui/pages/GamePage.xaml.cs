@@ -23,6 +23,7 @@ namespace Memory.ui.pages
         public double cardScaleHeight = 2;
         public double cardScaleWidth = 2;
         public Grid grid = new Grid();
+        public Dictionary<int, Image> images = new Dictionary<int, Image>();
         public List<int> selectedCards = new List<int>();
         public Uri defaultCardImage;
 
@@ -38,21 +39,21 @@ namespace Memory.ui.pages
                 new Uri(
                     $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default/default.jpg");
 
-            cards = Card.Generate(images);
+            _cards = Card.Generate(images);
             ShowCards();
         }
 
         private void ShowCards()
         {
-            var rows = Math.Sqrt(cards.Count);
-            var columns = Math.Sqrt(cards.Count);
+            var rows = Math.Sqrt(_cards.Count);
+            var columns = Math.Sqrt(_cards.Count);
 
             var maxScale = Math.Min(SystemParameters.PrimaryScreenHeight / rows,
                 SystemParameters.PrimaryScreenWidth / columns);
-            var maxScaleSize = Math.Max(cardScaleHeight, cardScaleWidth);
+            var maxScaleSize = Math.Max(CardScaleHeight, CardScaleWidth);
 
-            var cardHeight = (int) (cardScaleHeight * maxScale / maxScaleSize);
-            var cardWidth = (int) (cardScaleWidth * maxScale / maxScaleSize);
+            var cardHeight = (int) (CardScaleHeight * maxScale / maxScaleSize);
+            var cardWidth = (int) (CardScaleWidth * maxScale / maxScaleSize);
 
             grid.Width = cardWidth * columns;
             grid.HorizontalAlignment = HorizontalAlignment.Center;
@@ -81,7 +82,7 @@ namespace Memory.ui.pages
                 image.Stretch = Stretch.Fill;
 
                 var currentIndex = index;
-                var card = cards[index];
+                var card = _cards[index];
                 image.MouseDown += (sender, e) =>
                 {
                     var cardImage = sender as Image;
@@ -104,7 +105,7 @@ namespace Memory.ui.pages
         private async void ButtonHandler(Card card, Image cardImage, int index)
         {
             if (selectedCards.Count >= 1 && selectedCards[0] == index || selectedCards.Count == 2) return;
-            cardImage.Source = card.Image;
+            cardImage.Source = card.image;
             selectedCards.Add(index);
 
             if (!shownCards.ContainsKey(index))
@@ -119,12 +120,12 @@ namespace Memory.ui.pages
 
         private async Task CheckCards()
         {
-            if (cards[selectedCards[0]].Type == cards[selectedCards[1]].Type)
+            if (_cards[selectedCards[0]].type == _cards[selectedCards[1]].type)
             {
                 // TODO: increment score
                 await Task.Delay(500);
-                grid.Children.Remove(cardImages[selectedCards[0]]);
-                cardImages.Remove(selectedCards[0]);
+                grid.Children.Remove(images[selectedCards[0]]);
+                images.Remove(selectedCards[0]);
 
                 grid.Children.Remove(cardImages[selectedCards[1]]);
                 cardImages.Remove(selectedCards[1]);

@@ -5,23 +5,23 @@ using System.Windows.Media.Imaging;
 namespace Memory.card
 {
     /// <summary>
-    /// Object used for handling the game card mechanics.
+    ///     Object used for handling the game card mechanics.
     /// </summary>
-    class Card
+    internal class Card
     {
-        public readonly int Type;
-        public readonly BitmapImage Image;
+        public readonly BitmapImage image;
+        public readonly int type;
 
         private Card(int type, string path)
         {
-            Type = type;
+            this.type = type;
 
             var uri = new Uri(path);
-            Image = new BitmapImage(uri);
+            image = new BitmapImage(uri);
         }
 
         /// <summary>
-        /// Used for generating a random list of cards.
+        ///     Used for generating a random list of cards.
         /// </summary>
         /// <param name="images">The image paths to base the cards off of.</param>
         /// <returns>A list of cards twice as big as images.</returns>
@@ -41,10 +41,10 @@ namespace Memory.card
         }
 
         /// <summary>
-        /// Shuffles a list of cards.
+        ///     Shuffles a list of cards.
         /// </summary>
         /// <param name="cards">The List of cards to shuffle.</param>
-        public static void Shuffle(IList<Card> cards)
+        private static void Shuffle(IList<Card> cards)
         {
             var random = new Random();
 
