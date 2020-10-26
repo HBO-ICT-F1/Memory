@@ -16,14 +16,24 @@ namespace Memory.ui.pages
     public partial class GamePage : Page
     {
         private readonly List<Card> _cards = new List<Card>();
-        public Dictionary<int, Image> cardImages = new Dictionary<int, Image>();
-        public double CardScaleHeight = 2;
-        public double CardScaleWidth = 2;
-        public Uri defaultCardImage;
-        public Grid grid = new Grid();
-        public Dictionary<int, Image> images = new Dictionary<int, Image>();
-        public List<int> selectedCards = new List<int>();
-        public Dictionary<int, int> shownCards = new Dictionary<int, int>();
+        private Dictionary<int, Image> cardImages = new Dictionary<int, Image>();
+        private double CardScaleHeight = 2;
+        private double CardScaleWidth = 2;
+        private Uri defaultCardImage;
+        private Grid grid = new Grid();
+        private List<int> selectedCards = new List<int>();
+        private Dictionary<int, int> shownCards = new Dictionary<int, int>();
+
+        public bool gridLines = false;
+        
+        public bool multiplayer = false;
+        private bool player1 = true;
+        private TextBlock player1_text = new TextBlock();
+        private int player1_score = 0;
+
+        private bool player2 = false;
+        private TextBlock player2_text = new TextBlock();
+        private int player2_score = 0;
 
         public GamePage()
         {
@@ -38,9 +48,77 @@ namespace Memory.ui.pages
                     $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/{theme}/default.jpg");
 
             _cards = Card.Generate(images);
+        }
+        
+        /// <summary>
+        ///     Used to start games and score generation.
+        /// </summary>
+        public void Start()
+        {
+            GenerateScore();
             ShowCards();
         }
 
+        /// <summary>
+        ///     Generate Score grid.
+        /// </summary>
+        private void GenerateScore()
+        {
+            Grid scoreGrid = new Grid();
+            scoreGrid.HorizontalAlignment = HorizontalAlignment.Left;
+            scoreGrid.VerticalAlignment = VerticalAlignment.Top;
+            scoreGrid.ShowGridLines = gridLines;
+
+            ColumnDefinition colDef1 = new ColumnDefinition();
+            scoreGrid.ColumnDefinitions.Add(colDef1);
+
+            RowDefinition rowDef1 = new RowDefinition();
+            RowDefinition rowDef2 = new RowDefinition();
+            scoreGrid.RowDefinitions.Add(rowDef1);
+            scoreGrid.RowDefinitions.Add(rowDef2);
+
+            player1_text.FontSize = 20;
+            player1_text.FontWeight = FontWeights.Bold;
+            Grid.SetColumn(player1_text, 0);
+            Grid.SetRow(player1_text, 0);
+            
+            player2_text.FontSize = 20;
+            player2_text.FontWeight = FontWeights.Bold;
+            Grid.SetColumn(player2_text, 0);
+            Grid.SetRow(player2_text, 1);
+
+            scoreGrid.Children.Add(player1_text);
+            scoreGrid.Children.Add(player2_text);
+            CardBox.Children.Add(scoreGrid);
+            UpdateCurrentPlayer();
+        }
+
+        /// <summary>
+        ///     Update player score and player turn.
+        /// </summary>
+        private void UpdateCurrentPlayer()
+        {
+            if (player1)
+            {
+                player1_text.Foreground = new SolidColorBrush(Colors.Red);
+                player2_text.Foreground = new SolidColorBrush(Colors.Black);
+            }
+
+            if (player2)
+            {
+                player1_text.Foreground = new SolidColorBrush(Colors.Black);
+                player2_text.Foreground = new SolidColorBrush(Colors.Red);
+            }
+            
+            player1_text.Text = $"Player 1: {player1_score}";
+            
+            string type = multiplayer ? "Player 2" : "Computer";
+            player2_text.Text = $"{type}: {player2_score}";
+        }
+
+        /// <summary>
+        ///     Generates playing area.
+        /// </summary>
         private void ShowCards()
         {
             var rows = Math.Sqrt(_cards.Count);
@@ -56,6 +134,7 @@ namespace Memory.ui.pages
             grid.Width = cardWidth * columns;
             grid.HorizontalAlignment = HorizontalAlignment.Center;
             grid.VerticalAlignment = VerticalAlignment.Center;
+            grid.ShowGridLines = gridLines;
 
             for (var i = 0; i < columns; i++)
             {
@@ -68,7 +147,6 @@ namespace Memory.ui.pages
                 var row = new RowDefinition();
                 row.Height = new GridLength(cardHeight);
                 grid.RowDefinitions.Add(row);
-                grid.ShowGridLines = true;
             }
 
             var index = 0;
@@ -100,6 +178,9 @@ namespace Memory.ui.pages
             CardBox.Children.Add(grid);
         }
 
+        /// <summary>
+        ///     Button handler to detect card selected.
+        /// </summary>
         private async void ButtonHandler(Card card, Image cardImage, int index)
         {
             if (selectedCards.Count >= 1 && selectedCards[0] == index || selectedCards.Count == 2) return;
@@ -113,11 +194,16 @@ namespace Memory.ui.pages
             selectedCards.Clear();
         }
 
+        /// <summary>
+        ///     Check if selected cards are the same.
+        /// </summary>
         private async Task CheckCards()
         {
             if (_cards[selectedCards[0]].type == _cards[selectedCards[1]].type)
             {
-                // TODO: increment score
+                if (player1) player1_score++;
+                if (player2) player2_score++;
+
                 await Task.Delay(500);
                 grid.Children.Remove(cardImages[selectedCards[0]]);
                 cardImages.Remove(selectedCards[0]);
@@ -127,15 +213,28 @@ namespace Memory.ui.pages
 
                 shownCards.Remove(selectedCards[0]);
                 shownCards.Remove(selectedCards[1]);
+                
+                UpdateCurrentPlayer();
                 return;
             }
 
             await Task.Delay(1000);
             cardImages[selectedCards[0]].Source = cardImages[selectedCards[1]].Source =
                 new BitmapImage(defaultCardImage);
-            await ComputerAgent();
+            
+            player1 = !player1;
+            player2 = !player2;
+            UpdateCurrentPlayer();
+            if (!multiplayer)
+            {
+                await ComputerAgent();
+            }
         }
 
+        /// <summary>
+        ///     Start turn of the computer agent.
+        /// </summary>
+        /// <returns>A task</returns>
         private async Task ComputerAgent()
         {
             var typeCount = new Dictionary<int, List<int>>();
@@ -170,15 +269,17 @@ namespace Memory.ui.pages
 
                 if (!shownCards.ContainsKey(cardTwo)) shownCards.Add(cardTwo, _cards[cardTwo].type);
 
-                await Task.Delay(1000);
+                await Task.Delay(600);
                 cardImages[cardOne].Source = _cards[cardOne].image;
-                await Task.Delay(1000);
+                await Task.Delay(600);
                 cardImages[cardTwo].Source = _cards[cardTwo].image;
-                await Task.Delay(1000);
+                await Task.Delay(500);
                 if (_cards[cardOne].type != _cards[cardTwo].type)
                 {
-                    cardImages[cardOne].Source = cardImages[cardTwo].Source =
-                        new BitmapImage(defaultCardImage);
+                    cardImages[cardOne].Source = cardImages[cardTwo].Source = new BitmapImage(defaultCardImage);
+                    player1 = !player1;
+                    player2 = !player2;
+                    UpdateCurrentPlayer();
                     return;
                 }
             }
@@ -186,14 +287,12 @@ namespace Memory.ui.pages
             {
                 cardOne = typeCount[(int) typeIndex][0];
                 cardTwo = typeCount[(int) typeIndex][1];
-                await Task.Delay(1000);
+                await Task.Delay(600);
                 cardImages[typeCount[(int) typeIndex][0]].Source = _cards[typeCount[(int) typeIndex][0]].image;
-                await Task.Delay(1000);
+                await Task.Delay(600);
                 cardImages[typeCount[(int) typeIndex][1]].Source = _cards[typeCount[(int) typeIndex][1]].image;
                 await Task.Delay(500);
             }
-
-            // TODO: increment score
 
             if (shownCards.ContainsKey(cardOne)) shownCards.Remove(cardOne);
 
@@ -207,9 +306,16 @@ namespace Memory.ui.pages
 
             shownCards.Remove(cardOne);
             shownCards.Remove(cardTwo);
+            
+            player2_score++;
+            UpdateCurrentPlayer();
+            
             if (grid.Children.Count > 0) await ComputerAgent();
         }
 
+        /// <summary>
+        ///     Picks a random key (card) for computer agent.
+        /// </summary>
         private async Task<int> PickRandomKey(int? retryKey = null)
         {
             var rand = new Random();
