@@ -11,7 +11,7 @@
         <Button Content="&#xD;&#xA;Back" Grid.Column="1" HorizontalAlignment="Left" Margin="41.6,458,0,0" VerticalAlignment="Top" Width="75" Height="50" Background="Orange" Click="Button_Click_1"/>
         <Rectangle Fill="Orange" HorizontalAlignment="Left" Height="50" Margin="0,76,0,0" VerticalAlignment="Top" Width="400" Grid.ColumnSpan="2" Stroke="Black"/>
         <TextBox Grid.Column="1" HorizontalAlignment="Left" Height="37" Margin="5.2,83,0,0" TextWrapping="Wrap" Text="Thema's" VerticalAlignment="Top" Width="375" TextAlignment="Center" Background="Orange" Foreground="Black" SelectionBrush="{x:Null}" SelectionTextBrush="{x:Null}" BorderBrush="{x:Null}"/>
-        <Button x:Name="Collapse" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="343.2,83,0,0" VerticalAlignment="Top" Width="37" Height="37">
+        <Button x:Name="Collapse" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="343.2,83,0,0" VerticalAlignment="Top" Width="37" Height="37" Click="Collapse_Click">
             <Button.Foreground>
                 <ImageBrush ImageSource="DownSettingsDrop - 2 - kopie.png"/>
             </Button.Foreground>
@@ -22,10 +22,9 @@
                 <ImageBrush/>
             </Button.BorderBrush>
         </Button>
-        <Rectangle Fill="Orange" HorizontalAlignment="Left" Height="122" Margin="0,131,0,0" Stroke="Black" VerticalAlignment="Top" Width="400" Grid.ColumnSpan="2"/>
-        <ListBox Grid.Column="1" HorizontalAlignment="Left" Height="105" Margin="10.2,139,0,0" VerticalAlignment="Top" Width="370" Background="Black" BorderBrush="{x:Null}" Foreground="{x:Null}">
+        <Rectangle Fill="Orange" HorizontalAlignment="Left" Height="106" Margin="0,131,0,0" Stroke="Black" VerticalAlignment="Top" Width="400" Grid.ColumnSpan="2"/>
+        <ListBox Grid.Column="1" HorizontalAlignment="Left" Height="89" Margin="10.2,139,0,0" VerticalAlignment="Top" Width="370" Background="Black" BorderBrush="{x:Null}" Foreground="{x:Null}">
             <ListBoxItem Background="Orange" Height="20" Width="350" Selected="ListBoxItem_Selected" BorderBrush="{x:Null}"/>
-            <ListBoxItem Background="Orange" Height="20" Width="350" BorderBrush="{x:Null}"/>
             <ListBoxItem Background="Orange" Height="20" Width="350" BorderBrush="{x:Null}"/>
             <ListBoxItem Background="Orange" Height="20" Width="350" BorderBrush="{x:Null}"/>
             <ListBoxItem Background="Orange" Height="20" Width="350" BorderBrush="{x:Null}"/>
