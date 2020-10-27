@@ -40,7 +40,7 @@ namespace Memory.ui.pages
         private void BattleRobot(object sender, RoutedEventArgs e)
         {
             var gamePage = new GamePage();
-            // gamePage.multiplayer = false;
+            gamePage.Multiplayer = false;
             gamePage.Start();
             MainWindow.GetMainWindow().ChangePage(gamePage);
         }
