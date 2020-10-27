@@ -9,7 +9,6 @@
             <ColumnDefinition Width="79*"/>
         </Grid.ColumnDefinitions>
         <Button Content="&#xD;&#xA;Back" Grid.Column="1" HorizontalAlignment="Left" Margin="41.6,458,0,0" VerticalAlignment="Top" Width="75" Height="50" Background="Orange" Click="Button_Click_1"/>
-        <Button Content="&#xD;&#xA;Music" Grid.Column="1" HorizontalAlignment="Left" Margin="260.6,458,0,0" VerticalAlignment="Top" Width="75" Height="50" Click="Button_Click" Background="Orange"/>
         <Rectangle Fill="Orange" HorizontalAlignment="Left" Height="50" Margin="0,76,0,0" Stroke="Black" VerticalAlignment="Top" Width="400" Grid.ColumnSpan="2"/>
         <TextBox Grid.Column="1" HorizontalAlignment="Left" Height="37" Margin="5.2,83,0,0" TextWrapping="Wrap" Text="Thema" VerticalAlignment="Top" Width="375" TextAlignment="Center"/>
         <Button Content="Button" Grid.Column="1" HorizontalAlignment="Left" Margin="329.2,89,0,0" VerticalAlignment="Top" Width="28" Height="31"/>
