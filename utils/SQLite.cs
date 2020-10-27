@@ -8,21 +8,16 @@ namespace Memory.utils
     public class SQLite
     {
         private readonly SqliteOpenMode _mode;
-        private readonly string _name, _password;
+        private readonly string _name;
 
-        public SQLite(string name) : this(name, SqliteOpenMode.ReadWriteCreate, string.Empty)
+        public SQLite(string name) : this(name, SqliteOpenMode.ReadWriteCreate)
         {
         }
 
-        public SQLite(string name, SqliteOpenMode mode) : this(name, mode, string.Empty)
-        {
-        }
-
-        public SQLite(string name, SqliteOpenMode mode, string password)
+        public SQLite(string name, SqliteOpenMode mode)
         {
             _name = name;
             _mode = mode;
-            _password = password;
         }
 
         /// <summary>
@@ -50,8 +45,7 @@ namespace Memory.utils
             var connectionStringBuilder = new SqliteConnectionStringBuilder
             {
                 DataSource = _name,
-                Mode = _mode,
-                Password = _password
+                Mode = _mode
             };
 
             var connection = new SqliteConnection(connectionStringBuilder.ToString());

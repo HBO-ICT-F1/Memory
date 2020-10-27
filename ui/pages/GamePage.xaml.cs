@@ -39,7 +39,7 @@ namespace Memory.ui.pages
         public GamePage()
         {
             InitializeComponent();
-            var theme = MainWindow.GetMainWindow().theme;
+            var theme = App.GetInstance().theme;
             var images =
                 Directory.GetFiles(
                     $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/{theme}/cards",

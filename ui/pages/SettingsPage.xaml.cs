@@ -17,7 +17,10 @@ namespace Memory.ui.pages
             RoutedPropertyChangedEventArgs<double> routedPropertyChangedEventArgs)
         {
             var volume = routedPropertyChangedEventArgs.NewValue;
-            _mainWindow.player.Volume = volume;
+            App.GetInstance().player.Volume = volume;
+
+            var db = App.GetInstance().database;
+            db.Query($@"INSERT OR REPLACE INTO `settings` VALUES('volume', '{volume}')");
         }
     }
 }
