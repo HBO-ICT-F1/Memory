@@ -52,7 +52,7 @@ namespace Memory.ui
             var image = new Image
             {
                 Source = new BitmapImage(new Uri(
-                    $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/{App.GetInstance().theme}/background.jpg")
+                    $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/{App.GetInstance().Theme}/background.jpg")
                 )
             };
             backGround.ImageSource = image.Source;

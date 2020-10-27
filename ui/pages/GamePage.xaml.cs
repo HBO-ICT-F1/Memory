@@ -42,7 +42,7 @@ namespace Memory.ui.pages
             InitializeComponent();
             _multiplayer = multiplayer;
             
-            var theme = App.GetInstance().theme;
+            var theme = App.GetInstance().Theme;
             var images =
                 Directory.GetFiles(
                     $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/{theme}/cards",
