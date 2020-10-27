@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Media;
 using System.Threading.Tasks;
 using System.Windows;
@@ -240,6 +241,13 @@ namespace Memory.ui.pages
         private async Task ComputerAgent()
         {
             var typeCount = new Dictionary<int, List<int>>();
+            
+            // 0 1 2 3 
+            //
+            // 
+            //
+            //
+            
             foreach (var card in _shownCards)
                 if (!typeCount.ContainsKey(card.Value))
                 {
@@ -263,8 +271,8 @@ namespace Memory.ui.pages
             int cardTwo;
             if (typeIndex == null)
             {
-                cardOne = await PickRandomKey();
-                cardTwo = await PickRandomKey(cardOne);
+                cardOne = PickRandomKey(typeCount);
+                cardTwo = PickRandomKey(typeCount, cardOne);
 
                 if (!_shownCards.ContainsKey(cardOne)) _shownCards.Add(cardOne, _cards[cardOne].type);
 
@@ -319,14 +327,22 @@ namespace Memory.ui.pages
         /// <summary>
         ///     Picks a random key (card) for computer agent.
         /// </summary>
-        private async Task<int> PickRandomKey(int? retryKey = null)
+        /// <param name="knownCards">give all the cards the agent knows of</param>
+        /// <param name="retryKey">the key of the card that was previously picked</param>
+        /// <returns>a randomly picked key of a card that has not been picked prior</returns>
+        private int PickRandomKey(Dictionary<int, List<int>> knownCards, int? retryKey = null)
         {
-            var rand = new Random();
+            var genericCardList = knownCards.SelectMany(c => c.Value).ToList();
+            var key = 0;
             var keyList = new List<int>(_cardImages.Keys);
-            var key = keyList[rand.Next(keyList.Count)];
-            if (key != retryKey) return key;
-            await Task.Delay(10);
-            return await PickRandomKey(retryKey);
+            do
+            {
+                var rand = new Random();
+                key = keyList[rand.Next(keyList.Count)];
+            } while (key == retryKey || genericCardList.Any(d => d == key));
+
+            return key;
+            
         }
     }
 }
