@@ -202,8 +202,12 @@ namespace Memory.ui.pages
             if (_grid.Children.Count <= 0) GameFinished();
         }
 
+        /// <summary>
+        ///     Quit game page when game finished.
+        /// </summary>
         private void GameFinished()
         {
+            MainWindow.GetMainWindow().ChangePage(MainWindow.GetMainWindow().mainPage);
         }
 
         /// <summary>
