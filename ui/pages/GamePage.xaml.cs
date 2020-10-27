@@ -280,6 +280,7 @@ namespace Memory.ui.pages
                     cardImages[cardOne].Source = cardImages[cardTwo].Source = new BitmapImage(defaultCardImage);
                     player1 = !player1;
                     player2 = !player2;
+                    SystemSounds.Hand.Play();
                     UpdateCurrentPlayer();
                     return;
                 }
@@ -308,6 +309,7 @@ namespace Memory.ui.pages
             shownCards.Remove(cardOne);
             shownCards.Remove(cardTwo);
 
+            SystemSounds.Asterisk.Play();
             player2_score++;
             UpdateCurrentPlayer();
 
