@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using Memory.utils;
 using Microsoft.Data.Sqlite;
 using NUnit.Framework;
@@ -15,6 +14,7 @@ namespace Tests.utils
         [SetUp]
         public void Init()
         {
+            // Initialize database and drop table from previous runs
             _sqLite = new SQLite("Test.sql");
             _sqLite.Query("DROP TABLE `users`;");
         }
@@ -30,7 +30,7 @@ namespace Tests.utils
                     "CREATE TABLE IF NOT EXISTS `users`(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL);");
                 Assert.Pass("Successfully created SQLite database.");
             }
-            catch (SqliteException e)
+            catch (SqliteException)
             {
                 Assert.Fail("Failed to create SQLite database.");
             }
@@ -41,23 +41,26 @@ namespace Tests.utils
         {
             try
             {
+                // Create database if Can_Create_Database test wasn't run
                 _sqLite.Query(
                     "CREATE TABLE IF NOT EXISTS `users`(id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL);");
+
+                // Add test data
                 _sqLite.Query("INSERT INTO `users`(name) VALUES('Robert');");
                 _sqLite.Query("INSERT INTO `users`(name) VALUES('Kevin');");
                 _sqLite.Query("INSERT INTO `users`(name) VALUES('Rutger');");
 
                 _sqLite.Query("SELECT * FROM `users`;", reader =>
                 {
-                    Assert.False(reader.IsClosed);
-                    Assert.True(reader.HasRows);
-                    Assert.True(reader.NextResult());
+                    // Go to next row, or fail if there is no data
+                    Assert.True(reader.Read());
 
-                    // Try to get data from the database
+                    // Read data
+                    var name = Convert.ToString(reader["name"]);
                     var id = Convert.ToInt32(reader["id"]);
-                    var name = Convert.ToInt32(reader["name"]);
-                    Debug.WriteLine($"Found {name} at id {id}");
-                    Assert.Pass("Successfully queried SQLite database.");
+
+                    // Mark as success
+                    Assert.Pass($"Successfully queried SQLite database, found {name} at {id}");
                 });
             }
             catch (SqliteException)

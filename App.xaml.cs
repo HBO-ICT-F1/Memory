@@ -3,7 +3,6 @@ using System.IO;
 using System.Windows;
 using System.Windows.Media;
 using Memory.utils;
-using Microsoft.Data.Sqlite;
 
 namespace Memory
 {
@@ -20,7 +19,7 @@ namespace Memory
         /// <summary>
         ///     The SQLite database where settings and scores are saved
         /// </summary>
-        public readonly SQLite Database = new SQLite("memory.sql", SqliteOpenMode.ReadWriteCreate);
+        public readonly SQLite Database = new SQLite("memory.sql");
 
         /// <summary>
         ///     The media player used for audio
@@ -57,7 +56,7 @@ namespace Memory
             // Load media player volume
             Database.Query("SELECT `value` FROM `settings`", reader =>
             {
-                if (reader.HasRows && reader.NextResult())
+                if (reader.Read())
                 {
                     Player.Volume = reader.GetDouble(0);
                     return;

@@ -11,11 +11,7 @@ namespace Memory.utils
         private readonly SqliteOpenMode _mode;
         private readonly string _name;
 
-        public SQLite(string name) : this(name, SqliteOpenMode.ReadWriteCreate)
-        {
-        }
-
-        public SQLite(string name, SqliteOpenMode mode)
+        public SQLite(string name, SqliteOpenMode mode = SqliteOpenMode.ReadWriteCreate)
         {
             _name = name;
             _mode = mode;
