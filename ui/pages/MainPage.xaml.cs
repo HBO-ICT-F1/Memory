@@ -15,10 +15,6 @@ namespace Memory.ui.pages
 
         private void Play(object sender, RoutedEventArgs e)
         {
-            // var gamePage = new GamePage();
-            // gamePage.multiplayer = false;
-            // gamePage.Start();
-            // MainWindow.GetMainWindow().ChangePage(gamePage);
             MainWindow.GetMainWindow().ChangePage(new PreGame());
         }
 
