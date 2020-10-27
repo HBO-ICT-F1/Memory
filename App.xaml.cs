@@ -20,7 +20,7 @@ namespace Memory
         /// <summary>
         ///     The SQLite database where settings and scores are saved
         /// </summary>
-        public readonly SQLite Database = new SQLite("memory.db", SqliteOpenMode.ReadWriteCreate);
+        public readonly SQLite Database = new SQLite("memory.sql", SqliteOpenMode.ReadWriteCreate);
 
         /// <summary>
         ///     The media player used for audio
@@ -38,7 +38,21 @@ namespace Memory
             _app = this;
 
             // Create table for saving data
-            Database.Query("CREATE TABLE IF NOT EXISTS settings(name TEXT NOT NULL UNIQUE, value TEXT)");
+            Database.Query(@"CREATE TABLE IF NOT EXISTS `settings` (
+                name  VARCHAR(45) NOT NULL UNIQUE,
+                value LONGTEXT NOT NULL
+            );");
+
+            // Create table for saving game
+            Database.Query(@"CREATE TABLE IF NOT EXISTS `saves` (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                multiplayer TINYINT,
+                game_size INT,
+                players LONGTEXT,
+                cards LONGTEXT,
+                shown_cards LONGTEXT,
+                theme VARCHAR(45)
+            );");
 
             // Load media player volume
             var data = Database.Query("SELECT `value` FROM `settings` WHERE `name` = 'volume'");
