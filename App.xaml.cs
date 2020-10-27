@@ -54,7 +54,7 @@ namespace Memory
             );");
 
             // Load media player volume
-            Database.Query("SELECT `value` FROM `settings`", (reader, _) =>
+            Database.Query("SELECT `value` FROM `settings`", reader =>
             {
                 if (reader.Read())
                 {
