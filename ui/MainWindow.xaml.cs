@@ -65,7 +65,7 @@ namespace Memory.ui
                 $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/{theme}/default.mp3"));
 
             player.Volume = 0.2;
-            // player.Play();
+            player.Play();
         }
 
         public static MainWindow GetMainWindow()
