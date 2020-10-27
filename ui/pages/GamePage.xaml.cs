@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Media;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,24 +17,24 @@ namespace Memory.ui.pages
     public partial class GamePage : Page
     {
         private readonly List<Card> _cards = new List<Card>();
-        private Dictionary<int, Image> cardImages = new Dictionary<int, Image>();
-        private double CardScaleHeight = 2;
-        private double CardScaleWidth = 2;
-        private Uri defaultCardImage;
-        private Grid grid = new Grid();
-        private List<int> selectedCards = new List<int>();
-        private Dictionary<int, int> shownCards = new Dictionary<int, int>();
+        private readonly Dictionary<int, Image> cardImages = new Dictionary<int, Image>();
+        private readonly double CardScaleHeight = 2;
+        private readonly double CardScaleWidth = 2;
+        private readonly Uri defaultCardImage;
+        private readonly Grid grid = new Grid();
+        private readonly TextBlock player1_text = new TextBlock();
+        private readonly TextBlock player2_text = new TextBlock();
+        private readonly List<int> selectedCards = new List<int>();
+        private readonly Dictionary<int, int> shownCards = new Dictionary<int, int>();
 
         public bool gridLines = false;
-        
+
         public bool multiplayer = false;
         private bool player1 = true;
-        private TextBlock player1_text = new TextBlock();
-        private int player1_score = 0;
+        private int player1_score;
 
-        private bool player2 = false;
-        private TextBlock player2_text = new TextBlock();
-        private int player2_score = 0;
+        private bool player2;
+        private int player2_score;
 
         public GamePage()
         {
@@ -49,7 +50,7 @@ namespace Memory.ui.pages
 
             _cards = Card.Generate(images);
         }
-        
+
         /// <summary>
         ///     Used to start games and score generation.
         /// </summary>
@@ -64,16 +65,16 @@ namespace Memory.ui.pages
         /// </summary>
         private void GenerateScore()
         {
-            Grid scoreGrid = new Grid();
+            var scoreGrid = new Grid();
             scoreGrid.HorizontalAlignment = HorizontalAlignment.Left;
             scoreGrid.VerticalAlignment = VerticalAlignment.Top;
             scoreGrid.ShowGridLines = gridLines;
 
-            ColumnDefinition colDef1 = new ColumnDefinition();
+            var colDef1 = new ColumnDefinition();
             scoreGrid.ColumnDefinitions.Add(colDef1);
 
-            RowDefinition rowDef1 = new RowDefinition();
-            RowDefinition rowDef2 = new RowDefinition();
+            var rowDef1 = new RowDefinition();
+            var rowDef2 = new RowDefinition();
             scoreGrid.RowDefinitions.Add(rowDef1);
             scoreGrid.RowDefinitions.Add(rowDef2);
 
@@ -81,7 +82,7 @@ namespace Memory.ui.pages
             player1_text.FontWeight = FontWeights.Bold;
             Grid.SetColumn(player1_text, 0);
             Grid.SetRow(player1_text, 0);
-            
+
             player2_text.FontSize = 20;
             player2_text.FontWeight = FontWeights.Bold;
             Grid.SetColumn(player2_text, 0);
@@ -109,10 +110,10 @@ namespace Memory.ui.pages
                 player1_text.Foreground = new SolidColorBrush(Colors.Black);
                 player2_text.Foreground = new SolidColorBrush(Colors.Red);
             }
-            
+
             player1_text.Text = $"Player 1: {player1_score}";
-            
-            string type = multiplayer ? "Player 2" : "Computer";
+
+            var type = multiplayer ? "Player 2" : "Computer";
             player2_text.Text = $"{type}: {player2_score}";
         }
 
@@ -213,7 +214,8 @@ namespace Memory.ui.pages
 
                 shownCards.Remove(selectedCards[0]);
                 shownCards.Remove(selectedCards[1]);
-                
+
+                SystemSounds.Asterisk.Play();
                 UpdateCurrentPlayer();
                 return;
             }
@@ -221,14 +223,13 @@ namespace Memory.ui.pages
             await Task.Delay(1000);
             cardImages[selectedCards[0]].Source = cardImages[selectedCards[1]].Source =
                 new BitmapImage(defaultCardImage);
-            
+
             player1 = !player1;
             player2 = !player2;
+
+            SystemSounds.Hand.Play();
             UpdateCurrentPlayer();
-            if (!multiplayer)
-            {
-                await ComputerAgent();
-            }
+            if (!multiplayer) await ComputerAgent();
         }
 
         /// <summary>
@@ -306,10 +307,10 @@ namespace Memory.ui.pages
 
             shownCards.Remove(cardOne);
             shownCards.Remove(cardTwo);
-            
+
             player2_score++;
             UpdateCurrentPlayer();
-            
+
             if (grid.Children.Count > 0) await ComputerAgent();
         }
 
