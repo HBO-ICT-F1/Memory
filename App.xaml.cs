@@ -20,7 +20,7 @@ namespace Memory
         /// <summary>
         ///     The SQLite database where settings and scores are saved
         /// </summary>
-        public readonly SQLite Database = new SQLite("memory.db", SqliteOpenMode.ReadWriteCreate);
+        public readonly SQLite Database = new SQLite("memory.sql", SqliteOpenMode.ReadWriteCreate);
 
         /// <summary>
         ///     The media player used for audio
@@ -38,11 +38,19 @@ namespace Memory
             _app = this;
 
             // Create table for saving data
-            Database.Query("CREATE TABLE IF NOT EXISTS settings(name TEXT NOT NULL UNIQUE, value TEXT)");
+            Database.Query("CREATE TABLE IF NOT EXISTS `settings`(`name` TEXT NOT NULL UNIQUE, `value` TEXT)");
 
             // Load media player volume
-            var data = Database.Query("SELECT `value` FROM `settings` WHERE `name` = 'volume'");
-            Player.Volume = 0.2;
+            Database.Query("SELECT `value` FROM `settings`", reader =>
+            {
+                if (reader.HasRows && reader.NextResult())
+                {
+                    Player.Volume = reader.GetDouble(0);
+                    return;
+                }
+
+                Player.Volume = 0.2;
+            });
 
             Player.Open(new Uri(
                 $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/{Theme}/default.mp3"));

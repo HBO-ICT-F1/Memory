@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using System;
+using Microsoft.Data.Sqlite;
 
 namespace Memory.utils
 {
@@ -24,15 +25,29 @@ namespace Memory.utils
         ///     Executes a query and returns an SQLiteDataReader
         /// </summary>
         /// <param name="query">The command to execute</param>
-        /// <returns>The response from the database</returns>
         /// <exception cref="SqliteException">An SQLite error occured during execution</exception>
-        public SqliteDataReader Query(string query)
+        public void Query(string query)
+        {
+            Query(query, _ => { });
+        }
+
+        /// <summary>
+        ///     Executes a query and returns an SQLiteDataReader
+        /// </summary>
+        /// <param name="query">The command to execute</param>
+        /// <param name="runnable">Used for handling the returned SqliteDataReader</param>
+        /// <exception cref="SqliteException">An SQLite error occured during execution</exception>
+        public void Query(string query, Action<SqliteDataReader> runnable)
         {
             using (var connection = Connect())
             {
                 var command = connection.CreateCommand();
                 command.CommandText = query;
-                return command.ExecuteReader();
+
+                using (var reader = command.ExecuteReader())
+                {
+                    runnable.Invoke(reader);
+                }
             }
         }
 
