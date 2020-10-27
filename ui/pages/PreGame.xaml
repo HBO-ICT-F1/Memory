@@ -20,7 +20,7 @@
         </CheckBox>
 
         <Button Click="BattleRobot" Height="50" Width="200" Background="Orange" FontSize="20" Margin="0 0 410 0">Battle Robot</Button>
-        <Button Click="BattleRobot" Height="50" Width="200" Background="Orange" FontSize="20">Local Multiplayer</Button>
-        <Button Click="MultiPlayer" Height="50" Width="200" Background="Orange" FontSize="20" Margin="410 0 0 0">Multiplayer</Button>
+        <Button Click="MultiPlayer" Height="50" Width="200" Background="Orange" FontSize="20">Local Multiplayer</Button>
+        <Button Click="Online" Height="50" Width="200" Background="Orange" FontSize="20" Margin="410 0 0 0">Multiplayer</Button>
     </Grid>
 </Page>

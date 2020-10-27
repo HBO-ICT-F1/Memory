@@ -50,5 +50,10 @@ namespace Memory.ui.pages
             gamePage.Start();
             MainWindow.GetMainWindow().ChangePage(gamePage);
         }
+
+        private void Online(object sender, RoutedEventArgs e)
+        {
+            
+        }
     }
 }
