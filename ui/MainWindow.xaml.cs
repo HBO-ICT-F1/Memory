@@ -34,7 +34,6 @@ namespace Memory.ui
             mainWindow = this;
             escapeMenuToggle = false;
             _escapeMenuDelay = DateTime.Now.ToFileTime();
-            theme = "dogs";
             mainPage = new MainPage();
             scoreboardPage = new ScoreboardPage();
             settingsPage = new SettingsPage();
@@ -65,7 +64,7 @@ namespace Memory.ui
                 $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/{theme}/default.mp3"));
 
             player.Volume = 0.2;
-            // player.Play();
+            player.Play();
         }
 
         public static MainWindow GetMainWindow()
