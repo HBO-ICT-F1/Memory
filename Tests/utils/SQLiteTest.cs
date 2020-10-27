@@ -50,7 +50,7 @@ namespace Tests.utils
                 _sqLite.Query("INSERT INTO `users`(name) VALUES('Kevin');");
                 _sqLite.Query("INSERT INTO `users`(name) VALUES('Rutger');");
 
-                _sqLite.Query("SELECT * FROM `users`;", reader =>
+                _sqLite.Query("SELECT * FROM `users`;", (reader, _) =>
                 {
                     // Go to next row, or fail if there is no data
                     Assert.True(reader.Read());
