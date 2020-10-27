@@ -27,5 +27,10 @@ namespace Memory.ui.pages
 
 
         }
+
+        private void ListBoxItem_Selected(object sender, System.Windows.RoutedEventArgs e)
+        {
+
+        }
     }
 }
