@@ -21,19 +21,9 @@ namespace Memory.utils
         ///     Executes a query and returns an SQLiteDataReader
         /// </summary>
         /// <param name="query">The command to execute</param>
-        /// <exception cref="SqliteException">An SQLite error occured during execution</exception>
-        public void Query(string query)
-        {
-            Query(query, _ => { });
-        }
-
-        /// <summary>
-        ///     Executes a query and returns an SQLiteDataReader
-        /// </summary>
-        /// <param name="query">The command to execute</param>
         /// <param name="runnable">Used for handling the returned SqliteDataReader</param>
         /// <exception cref="SqliteException">An SQLite error occured during execution</exception>
-        public void Query(string query, Action<SqliteDataReader> runnable)
+        public void Query(string query, Action<SqliteDataReader> runnable = null)
         {
             using (var connection = Connect())
             {
@@ -42,7 +32,7 @@ namespace Memory.utils
 
                 using (var reader = command.ExecuteReader())
                 {
-                    runnable.Invoke(reader);
+                    runnable?.Invoke(reader);
                 }
             }
         }
