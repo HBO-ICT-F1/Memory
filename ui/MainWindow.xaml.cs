@@ -34,7 +34,6 @@ namespace Memory.ui
             mainWindow = this;
             escapeMenuToggle = false;
             _escapeMenuDelay = DateTime.Now.ToFileTime();
-            theme = "dogs";
             mainPage = new MainPage();
             scoreboardPage = new ScoreboardPage();
             settingsPage = new SettingsPage();
