@@ -3,10 +3,6 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Background="Transparent">
     <Grid>
-        <!-- <Button Height="50px" Width="200px" Background="Orange" FontSize="20" Margin="0,145,0,255">Play</Button> -->
-        <!-- <Button Height="50px" Width="400px" Background="Orange" FontSize="20">Scoreboard</Button> -->
-        <!-- <Button Height="50px" Width="400px" Background="Orange" FontSize="20" Margin="0,255,0,145">Settings</Button> -->
-        <!-- <Button Height="50px" Width="400px" Background="Orange" FontSize="20" Margin="0,365,0,145">Quit</Button> -->
         <TextBox Height="50" Width="200" Background="Orange" FontSize="20" Margin="0 0 410 200">Speler 1</TextBox>
         <TextBox Height="50" Width="200" Background="Orange" FontSize="20" Margin="0 0 0 200">Speler 2</TextBox>
 
@@ -24,7 +20,7 @@
         </CheckBox>
 
         <Button Click="BattleRobot" Height="50" Width="200" Background="Orange" FontSize="20" Margin="0 0 410 0">Battle Robot</Button>
-        <Button Height="50" Width="200" Background="Orange" FontSize="20">Single player</Button>
-        <Button Height="50" Width="200" Background="Orange" FontSize="20" Margin="410 0 0 0">Multiplayer</Button>
+        <Button Click="BattleRobot" Height="50" Width="200" Background="Orange" FontSize="20">Single player</Button>
+        <Button Click="MultiPlayer" Height="50" Width="200" Background="Orange" FontSize="20" Margin="410 0 0 0">Multiplayer</Button>
     </Grid>
 </Page>

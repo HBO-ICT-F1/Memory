@@ -8,7 +8,7 @@ namespace Memory.ui.pages
     /// </summary>
     public partial class PreGame : Page
     {
-        private int GameSize = 4;
+        private int _gameSize = 4;
 
         public PreGame()
         {
@@ -18,29 +18,35 @@ namespace Memory.ui.pages
 
         private void FourByFour(object sender, RoutedEventArgs e)
         {
-            GameSize = 4;
+            _gameSize = 4;
             Six.IsChecked = false;
             Eight.IsChecked = false;
         }
 
         private void SixbySix(object sender, RoutedEventArgs e)
         {
-            GameSize = 6;
+            _gameSize = 6;
             Four.IsChecked = false;
             Eight.IsChecked = false;
         }
 
         private void EightByEight(object sender, RoutedEventArgs e)
         {
-            GameSize = 8;
+            _gameSize = 8;
             Four.IsChecked = false;
             Six.IsChecked = false;
         }
 
         private void BattleRobot(object sender, RoutedEventArgs e)
         {
-            var gamePage = new GamePage();
-            gamePage.Multiplayer = false;
+            var gamePage = new GamePage(false, _gameSize);
+            gamePage.Start();
+            MainWindow.GetMainWindow().ChangePage(gamePage);
+        }
+
+        private void MultiPlayer(object sender, RoutedEventArgs e)
+        {
+            var gamePage = new GamePage(true, _gameSize);
             gamePage.Start();
             MainWindow.GetMainWindow().ChangePage(gamePage);
         }

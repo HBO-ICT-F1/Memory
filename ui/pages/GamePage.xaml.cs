@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Media;
 using System.Threading.Tasks;
 using System.Windows;
@@ -25,7 +26,8 @@ namespace Memory.ui.pages
         private readonly List<int> _selectedCards = new List<int>();
         private readonly Dictionary<int, int> _shownCards = new Dictionary<int, int>();
         private const bool GridLines = false;
-        public bool Multiplayer = false;
+
+        private readonly bool _multiplayer;
 
         private bool _player1 = true;
         private int _player1Score;
@@ -35,14 +37,17 @@ namespace Memory.ui.pages
         private int _player2Score;
         private readonly TextBlock _player2Text = new TextBlock();
 
-        public GamePage()
+        public GamePage(bool multiplayer, int gameSize)
         {
             InitializeComponent();
+            _multiplayer = multiplayer;
+            
             var theme = MainWindow.GetMainWindow().theme;
             var images =
                 Directory.GetFiles(
                     $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/{theme}/cards",
                     "*");
+            images = images.ToList().Take((gameSize * gameSize) / 2).ToArray();
             _defaultCardImage =
                 new Uri(
                     $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/{theme}/default.jpg");
@@ -114,7 +119,7 @@ namespace Memory.ui.pages
 
             _player1Text.Text = $"Player 1: {_player1Score}";
 
-            var type = Multiplayer ? "Player 2" : "Computer";
+            var type = _multiplayer ? "Player 2" : "Computer";
             _player2Text.Text = $"{type}: {_player2Score}";
         }
 
@@ -194,6 +199,11 @@ namespace Memory.ui.pages
             if (_selectedCards.Count < 2) return;
             await CheckCards();
             _selectedCards.Clear();
+            if (_grid.Children.Count <= 0) GameFinished();
+        }
+
+        private void GameFinished()
+        {
         }
 
         /// <summary>
@@ -230,7 +240,7 @@ namespace Memory.ui.pages
 
             SystemSounds.Hand.Play();
             UpdateCurrentPlayer();
-            if (!Multiplayer) await ComputerAgent();
+            if (!_multiplayer) await ComputerAgent();
         }
 
         /// <summary>
