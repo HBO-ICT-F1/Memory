@@ -7,7 +7,7 @@ namespace Memory.ui.pages
     {
         public SettingsPage()
         {
-           
+            InitializeComponent();
         }
 
         private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
@@ -29,6 +29,16 @@ namespace Memory.ui.pages
         }
 
         private void ListBoxItem_Selected(object sender, System.Windows.RoutedEventArgs e)
+        {
+
+        }
+
+        private void ListBoxItem_Selected_1(object sender, System.Windows.RoutedEventArgs e)
+        {
+
+        }
+
+        private void TextBox_TextChanged_1(object sender, TextChangedEventArgs e)
         {
 
         }
