@@ -1,59 +1,52 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Memory.ui.pages
 {
     public partial class SettingsPage : Page
     {
+        private readonly App _app;
         private readonly MainWindow _mainWindow;
 
         public SettingsPage()
         {
+            _app = App.GetInstance();
             _mainWindow = MainWindow.GetMainWindow();
             InitializeComponent();
+            switch (_app.Theme)
+            {
+                case "default":
+                    Default.Background = Brushes.Gray;
+                    break;
+                case "dogs":
+                    Dogs.Background = Brushes.Gray;
+                    break;
+            }
+
+            Volume.Value = _app.Player.Volume;
         }
 
-        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+        private void ThemeDogs(object sender, RoutedEventArgs e)
         {
-
+            _app.Theme = "dogs";
+            _mainWindow.ChangeTheme(new MainPage());
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        private void ThemeSpace(object sender, RoutedEventArgs e)
         {
-
+            _app.Theme = "default";
+            _mainWindow.ChangeTheme(new MainPage());
         }
 
-        private void Button_Click_1(object sender, System.Windows.RoutedEventArgs e)
+        private void ChangeVolume(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            MainWindow.GetMainWindow().ChangePage(MainWindow.GetMainWindow().mainPage);
-
-
-
+            _app.Player.Volume = e.NewValue;
         }
 
-        private void ListBoxItem_Selected(object sender, System.Windows.RoutedEventArgs e)
+        private void Back(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        private void ListBoxItem_Selected_1(object sender, System.Windows.RoutedEventArgs e)
-        {
-
-        }
-
-        private void TextBox_TextChanged_1(object sender, TextChangedEventArgs e)
-        {
-
-        }
-
-        private void Slider_OnValueChanged(object sender,
-            RoutedPropertyChangedEventArgs<double> routedPropertyChangedEventArgs)
-        {
-            var volume = routedPropertyChangedEventArgs.NewValue;
-            App.GetInstance().Player.Volume = volume;
-
-            var db = App.GetInstance().Database;
-            db.Query($@"INSERT OR REPLACE INTO `settings` VALUES('volume', '{volume}')");
+            _mainWindow.ChangePage(new MainPage());
         }
     }
 }

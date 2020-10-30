@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -75,6 +74,14 @@ namespace Memory.ui
         {
             _activePage = page;
             UiFrame.Content = page;
+        }
+
+        public void ChangeTheme(Page page)
+        {
+            var window = new MainWindow();
+            window.Show();
+            Close();
+            ChangePage(page);
         }
 
         private void EscapeMenu(object sender, KeyEventArgs e)

@@ -1,35 +1,20 @@
 ﻿<Page x:Class="Memory.ui.pages.SettingsPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" mc:Ignorable="d" x:Class="Memory.ui.pages.SettingsPage"
-      Background="Transparent" d:DesignWidth="800.8" d:DesignHeight="649.2" Height="563" Width="400">
-    <Grid Margin="0,0,0,10.2">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
-            <ColumnDefinition Width="79*"/>
-        </Grid.ColumnDefinitions>
-        <Button Content="Back" Grid.Column="1" HorizontalAlignment="Left" Margin="41.6,458,0,0" VerticalAlignment="Top" Width="75" Height="50" Background="Orange" Click="Button_Click_1" FontSize="20"/>
-        <Rectangle Fill="Orange" HorizontalAlignment="Left" Height="50" Margin="0,76,0,0" VerticalAlignment="Top" Width="400" Grid.ColumnSpan="2" Stroke="Black"/>
-        <TextBox Grid.Column="1" HorizontalAlignment="Left" Height="37" Margin="5.2,83,0,0" TextWrapping="Wrap" Text="Themes:" VerticalAlignment="Top" Width="375" TextAlignment="Center" Background="Orange" Foreground="Black" SelectionBrush="{x:Null}" SelectionTextBrush="{x:Null}" BorderBrush="{x:Null}" TextChanged="TextBox_TextChanged_1" FontSize="20"/>
-        <Button x:Name="Collapse" Content="" Grid.Column="1" HorizontalAlignment="Left" Margin="343.2,83,0,0" VerticalAlignment="Top" Width="37" Height="37">
-            <Button.Foreground>
-                <ImageBrush ImageSource="DownSettingsDrop - 2 - kopie.png"/>
-            </Button.Foreground>
-            <Button.Background>
-                <ImageBrush Stretch="Fill" ImageSource="DownSettingsDrop - 2 - kopie.png"/>
-            </Button.Background>
-            <Button.BorderBrush>
-                <ImageBrush/>
-            </Button.BorderBrush>
+      Background="Transparent">
+    <Grid>
+        <Label VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30" Margin="0,0,0,500">Thema's</Label>
+        <Button x:Name="Dogs" Click="ThemeDogs" Height="50px" Width="400px" Background="Orange" FontSize="20"
+                Margin="0,0,0,400">
+            Man's best friends!
         </Button>
-        <Rectangle Fill="Orange" HorizontalAlignment="Left" Height="175" Margin="0,131,0,0" Stroke="Black" VerticalAlignment="Top" Width="400" Grid.ColumnSpan="2"/>
-        <ListBox Grid.Column="1" HorizontalAlignment="Left" Height="159" Margin="10.2,139,0,0" VerticalAlignment="Top" Width="370" Background="Black" BorderBrush="{x:Null}" Foreground="{x:Null}">
-            <ListBoxItem Background="Orange" Height="75" Width="350" Selected="ListBoxItem_Selected" BorderBrush="{x:Null}" Content="Man's best friends!" Foreground="Black" FontSize="20"/>
-            <ListBoxItem Background="Orange" Height="71" Width="350" BorderBrush="{x:Null}" Content="Outer space!" Foreground="Black" Selected="ListBoxItem_Selected_1" FontSize="20"/>
-
-
-
-        </ListBox>
-        
+        <Button x:Name="Default" Click="ThemeSpace" Height="50px" Width="400px" Background="Orange" FontSize="20"
+                Margin="0, 100,0,400">
+            Outer space!
+        </Button>
+        <Label VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30" Margin="0,0,0,110">Volume</Label>
+        <Slider x:Name="Volume" ValueChanged="ChangeVolume" Maximum="0.5" TickFrequency="0.01" Margin="0,0,0,50"
+                Width="400px" Background="Orange" Height="18px" />
+        <Button Click="Back" Height="50px" Width="100px" Background="Orange" FontSize="20" Margin="0, 100,0,0">Back</Button>
     </Grid>
 </Page>
