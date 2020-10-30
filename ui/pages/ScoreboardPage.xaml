@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Background="Transparent">
     <Grid>
-        <TextBlock FontSize="80" Foreground="Orange" Margin="0,0,0,0" TextAlignment="Center">
+        <TextBlock FontSize="80" Foreground="Orange" Margin="0,0,0,400" HorizontalAlignment="Center">
             Dit is het scoreboard
         </TextBlock>
 
