@@ -124,13 +124,16 @@
       <Compile Include="ui\pages\PreGame.xaml.cs">
           <DependentUpon>PreGame.xaml</DependentUpon>
       </Compile>
+      <Compile Include="ui\pages\SavedGamesPage.xaml.cs">
+          <DependentUpon>SavedGamesPage.xaml</DependentUpon>
+      </Compile>
       <Compile Include="ui\pages\ScoreboardPage.xaml.cs">
           <DependentUpon>ScoreboardPage.xaml</DependentUpon>
       </Compile>
       <Compile Include="ui\pages\SettingsPage.xaml.cs">
           <DependentUpon>SettingsPage.xaml</DependentUpon>
       </Compile>
-      <Compile Include="utils\SQLite.cs" />
+      <Compile Include="utils\SQLite.cs"/>
       <Page Include="ui\MainWindow.xaml">
           <SubType>Designer</SubType>
           <Generator>MSBuild:Compile</Generator>
@@ -148,8 +151,12 @@
           <SubType>Designer</SubType>
           <Generator>MSBuild:Compile</Generator>
       </Page>
-      <Page Include="ui\pages\ScoreboardPage.xaml" />
-      <Page Include="ui\pages\SettingsPage.xaml" />
+      <Page Include="ui\pages\SavedGamesPage.xaml">
+          <SubType>Designer</SubType>
+          <Generator>MSBuild:Compile</Generator>
+      </Page>
+      <Page Include="ui\pages\ScoreboardPage.xaml"/>
+      <Page Include="ui\pages\SettingsPage.xaml"/>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

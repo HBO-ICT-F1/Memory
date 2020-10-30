@@ -55,7 +55,8 @@ namespace Memory.ui.pages
         /// <param name="multiplayer">a boolean if the game is multiplayer</param>
         /// <param name="gameSize">the gameSize as a int</param>
         /// <param name="saveId">the id of the save game but isn't required</param>
-        public void Start(bool multiplayer, int gameSize, string playerOne, string playerTwo, int? saveId = null)
+        public void Start(int? saveId = null, bool multiplayer = false, int gameSize = 0, string playerOne = "",
+            string playerTwo = "")
         {
             _multiplayer = multiplayer;
             _gameSize = gameSize * gameSize;

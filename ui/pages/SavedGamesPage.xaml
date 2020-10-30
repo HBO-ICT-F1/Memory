@@ -1,0 +1,7 @@
+﻿<Page x:Class="Memory.ui.pages.SavedGamePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Background="Transparent"
+      Title="MainPage">
+    <Grid x:Name="Grid" />
+</Page>
