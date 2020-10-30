@@ -53,7 +53,7 @@ namespace Memory.ui.pages
 
         private void Online(object sender, RoutedEventArgs e)
         {
-            
+            MainWindow.GetMainWindow().ChangePage(new OnlinePage());
         }
     }
 }

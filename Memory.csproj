@@ -31,6 +31,14 @@
           <Private>True</Private>
       </Reference>
       <Reference Include="mscorlib"/>
+      <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
+          <HintPath>packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+          <Private>True</Private>
+      </Reference>
+      <Reference Include="SocketIOClient.NetFx, Version=2.0.2.9, Culture=neutral, PublicKeyToken=ce453294e4652142">
+          <HintPath>packages\SocketIOClient.NetFx.2.0.2.9\lib\net45\SocketIOClient.NetFx.dll</HintPath>
+          <Private>True</Private>
+      </Reference>
       <Reference Include="SQLitePCLRaw.batteries_v2, Version=2.0.2.669, Culture=neutral, PublicKeyToken=8226ea5df37bcae9">
           <HintPath>packages\SQLitePCLRaw.bundle_e_sqlite3.2.0.2\lib\net461\SQLitePCLRaw.batteries_v2.dll</HintPath>
           <Private>True</Private>
@@ -38,9 +46,9 @@
       <Reference Include="SQLitePCLRaw.core, Version=2.0.2.669, Culture=neutral, PublicKeyToken=1488e028ca7ab535">
           <HintPath>packages\SQLitePCLRaw.core.2.0.2\lib\netstandard2.0\SQLitePCLRaw.core.dll</HintPath>
           <Private>True</Private>
-    </Reference>
-    <Reference Include="SQLitePCLRaw.nativelibrary, Version=2.0.2.669, Culture=neutral, PublicKeyToken=502ed628492ab262">
-      <HintPath>packages\SQLitePCLRaw.bundle_e_sqlite3.2.0.2\lib\net461\SQLitePCLRaw.nativelibrary.dll</HintPath>
+      </Reference>
+      <Reference Include="SQLitePCLRaw.nativelibrary, Version=2.0.2.669, Culture=neutral, PublicKeyToken=502ed628492ab262">
+          <HintPath>packages\SQLitePCLRaw.bundle_e_sqlite3.2.0.2\lib\net461\SQLitePCLRaw.nativelibrary.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="SQLitePCLRaw.provider.dynamic_cdecl, Version=2.0.2.669, Culture=neutral, PublicKeyToken=b68184102cba0b3b">
@@ -64,20 +72,24 @@
     </Reference>
     <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
       <HintPath>packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
-      <Private>True</Private>
+        <Private>True</Private>
     </Reference>
-    <Reference Include="System.Xml" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xaml">
-      <RequiredTargetFramework>4.0</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="WindowsBase" />
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
+      <Reference Include="System.Xml"/>
+      <Reference Include="Microsoft.CSharp"/>
+      <Reference Include="System.Core"/>
+      <Reference Include="System.Xml.Linq"/>
+      <Reference Include="System.Data.DataSetExtensions"/>
+      <Reference Include="System.Net.Http"/>
+      <Reference Include="System.Xaml">
+          <RequiredTargetFramework>4.0</RequiredTargetFramework>
+      </Reference>
+      <Reference Include="websocket-sharp, Version=1.0.4.0, Culture=neutral, PublicKeyToken=5660b08a1845a91e">
+          <HintPath>packages\WebSocketSharpFork.1.0.4.0\lib\net35\websocket-sharp.dll</HintPath>
+          <Private>True</Private>
+      </Reference>
+      <Reference Include="WindowsBase"/>
+      <Reference Include="PresentationCore"/>
+      <Reference Include="PresentationFramework"/>
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
@@ -101,6 +113,9 @@
       <Compile Include="ui\pages\MainPage.xaml.cs">
           <DependentUpon>MainPage.xaml</DependentUpon>
       </Compile>
+      <Compile Include="ui\pages\OnlinePage.xaml.cs">
+          <DependentUpon>OnlinePage.xaml</DependentUpon>
+      </Compile>
       <Compile Include="ui\pages\PreGame.xaml.cs">
           <DependentUpon>PreGame.xaml</DependentUpon>
       </Compile>
@@ -121,6 +136,10 @@
           <Generator>MSBuild:Compile</Generator>
       </Page>
       <Page Include="ui\pages\MainPage.xaml">
+          <SubType>Designer</SubType>
+          <Generator>MSBuild:Compile</Generator>
+      </Page>
+      <Page Include="ui\pages\OnlinePage.xaml">
           <SubType>Designer</SubType>
           <Generator>MSBuild:Compile</Generator>
       </Page>

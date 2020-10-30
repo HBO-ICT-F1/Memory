@@ -27,7 +27,7 @@ namespace Memory.ui
         private long _escapeMenuDelay;
         public bool escapeMenuToggle;
         public MediaPlayer player = new MediaPlayer();
-        public string theme = "default";
+        public string theme = "dogs";
 
         public MainWindow()
         {
@@ -66,6 +66,7 @@ namespace Memory.ui
             player.Volume = 0.2;
             player.Play();
         }
+
 
         public static MainWindow GetMainWindow()
         {
