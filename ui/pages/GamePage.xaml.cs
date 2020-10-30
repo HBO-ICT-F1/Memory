@@ -92,8 +92,8 @@ namespace Memory.ui.pages
         {
             var players = new Dictionary<int, Dictionary<string, dynamic>>
             {
-                [0] = new Dictionary<string, dynamic> {{"turn", _player1Turn}, {"score", _player1Score}},
-                [1] = new Dictionary<string, dynamic> {{"turn", _player2Turn}, {"score", _player2Score}}
+                [0] = new Dictionary<string, dynamic> {{"turn", _player1Turn}, {"score", _player1Score}, {"name", _player1Name}},
+                [1] = new Dictionary<string, dynamic> {{"turn", _player2Turn}, {"score", _player2Score}, {"name", _player2Name}}
             };
 
             var playersJson = JsonSerializer.Serialize(players);
@@ -131,8 +131,10 @@ namespace Memory.ui.pages
                         Convert.ToString(reader["players"]));
                 _player1Turn = Convert.ToBoolean(players[0]["turn"].ToString());
                 _player1Score = Convert.ToInt32(players[0]["score"].ToString());
+                _player1Name = players[0]["name"].ToString();
                 _player2Turn = Convert.ToBoolean(players[1]["turn"].ToString());
                 _player2Score = Convert.ToInt32(players[1]["score"].ToString());
+                _player2Name = players[1]["name"].ToString();
             });
         }
 
