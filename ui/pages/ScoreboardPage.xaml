@@ -3,9 +3,15 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Background="Transparent">
     <Grid>
-        <TextBlock FontSize="100" Foreground="White">Hallo dit is de scoreboard</TextBlock>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="59*"/>
+            <RowDefinition Height="442*"/>
+        </Grid.RowDefinitions>
+        <TextBlock Width="660" FontSize="100" Foreground="White" Grid.RowSpan="2">
+            Dit is het scoreboard
+        </TextBlock>
 
-        <FlowDocumentReader HorizontalAlignment="Center" VerticalAlignment="Center" Width="500" Height="1000">
+        <FlowDocumentReader HorizontalAlignment="Center" VerticalAlignment="Center" Width="660" Height="500" Grid.RowSpan="2">
             <FlowDocument>
                 <Table x:Name="Scoreboard">
                     <Table.Columns>
@@ -28,14 +34,184 @@
                             </TableCell>
                             <TableCell>
                                 <Paragraph FontSize="20" Background="White">
-                                    Score 
+                                    Score
+                                </Paragraph>
+                            </TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell>
+                                <Paragraph FontSize="20" Background="White">
+                                    1
+                                </Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph FontSize="20" Background="White">
+
+                                </Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph FontSize="20" Background="White">
+
+                                </Paragraph>
+                            </TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell>
+                                <Paragraph FontSize="20" Background="White">
+                                    2
+                                </Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph FontSize="20" Background="White">
+
+                                </Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph FontSize="20" Background="White">
+
+                                </Paragraph>
+                            </TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell>
+                                <Paragraph FontSize="20" Background="White">
+                                    3
+                                </Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph FontSize="20" Background="White">
+
+                                </Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph FontSize="20" Background="White">
+
+                                </Paragraph>
+                            </TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell>
+                                <Paragraph FontSize="20" Background="White">
+                                    4
+                                </Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph FontSize="20" Background="White">
+
+                                </Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph FontSize="20" Background="White">
+
+                                </Paragraph>
+                            </TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell>
+                                <Paragraph FontSize="20" Background="White">
+                                    5
+                                </Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph FontSize="20" Background="White">
+
+                                </Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph FontSize="20" Background="White">
+
+                                </Paragraph>
+                            </TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell>
+                                <Paragraph FontSize="20" Background="White">
+                                    6
+                                </Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph FontSize="20" Background="White">
+
+                                </Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph FontSize="20" Background="White">
+
+                                </Paragraph>
+                            </TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell>
+                                <Paragraph FontSize="20" Background="White">
+                                    7
+                                </Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph FontSize="20" Background="White">
+
+                                </Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph FontSize="20" Background="White">
+
+                                </Paragraph>
+                            </TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell>
+                                <Paragraph FontSize="20" Background="White">
+                                    8
+                                </Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph FontSize="20" Background="White">
+
+                                </Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph FontSize="20" Background="White">
+
+                                </Paragraph>
+                            </TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell>
+                                <Paragraph FontSize="20" Background="White">
+                                    9
+                                </Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph FontSize="20" Background="White">
+
+                                </Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph FontSize="20" Background="White">
+
+                                </Paragraph>
+                            </TableCell>
+                        </TableRow>
+                        <TableRow>
+                            <TableCell>
+                                <Paragraph FontSize="20" Background="White">
+                                    10
+                                </Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph FontSize="20" Background="White">
+
+                                </Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph FontSize="20" Background="White">
+
                                 </Paragraph>
                             </TableCell>
                         </TableRow>
                     </TableRowGroup>
-                </Table>  
-            </FlowDocument>            
+                </Table>
+            </FlowDocument>
         </FlowDocumentReader>
-        
+
     </Grid>
 </Page>
