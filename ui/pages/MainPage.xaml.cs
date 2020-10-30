@@ -25,7 +25,7 @@ namespace Memory.ui.pages
 
         private void Scoreboard(object sender, RoutedEventArgs e)
         {
-            MainWindow.GetMainWindow().ChangePage(MainWindow.GetMainWindow().scoreboardPage);
+            MainWindow.GetMainWindow().ChangePage(new ScoreboardPage());
         }
 
         private void Quit(object sender, RoutedEventArgs e)

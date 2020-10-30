@@ -54,6 +54,13 @@ namespace Memory
                 theme VARCHAR(45)
             );");
 
+            // Create table for saving scores
+            Database.Query(@"CREATE TABLE IF NOT EXISTS `scores` (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name LONGTEXT,
+                score INT
+            );");
+
             // Load media player volume
             Database.Query("SELECT `value` FROM `settings`", reader =>
             {

@@ -298,6 +298,15 @@ namespace Memory.ui.pages
         /// </summary>
         private void GameFinished()
         {
+            if (_multiplayer)
+                App.GetInstance().Database
+                    .Query($@"INSERT INTO `scores` ('name', 'score') VALUES ('{_player2Name}', {_player2Score});");
+
+            App.GetInstance().Database
+                .Query($@"INSERT INTO `scores` ('name', 'score') VALUES ('{_player1Name}', {_player1Score});");
+
+            if (_saveId != null) App.GetInstance().Database.Query($@"DELETE FROM `saves` WHERE `id`={_saveId};");
+
             MainWindow.GetMainWindow().ChangePage(MainWindow.GetMainWindow().mainPage);
         }
 
