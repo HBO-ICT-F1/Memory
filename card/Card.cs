@@ -9,9 +9,6 @@ namespace Memory.card
     /// </summary>
     internal class Card
     {
-        public Uri Uri { get; set; }
-        public int Type { get; set; }
-
         private Card(int type, string path)
         {
             Type = type;
@@ -20,8 +17,10 @@ namespace Memory.card
 
         public Card()
         {
-            
         }
+
+        public Uri Uri { get; set; }
+        public int Type { get; set; }
 
         /// <summary>
         ///     Used for generating a random list of cards.

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text.Json;
 using System.IO;
 using System.Linq;
 using System.Media;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,27 +22,27 @@ namespace Memory.ui.pages
         private const double CardScaleWidth = 2;
         private const bool GridLines = false;
         private readonly Dictionary<int, Image> _cardImages = new Dictionary<int, Image>();
+        private readonly Grid _grid = new Grid();
+        private readonly TextBlock _player1Text = new TextBlock();
+        private readonly TextBlock _player2Text = new TextBlock();
+        private readonly List<int> _selectedCards = new List<int>();
         private List<Card> _cards;
         private Uri _defaultCardImage;
-        private readonly Grid _grid = new Grid();
+        private int _gameSize;
         private List<int> _hiddenCards = new List<int>();
 
         private bool _multiplayer;
-        private int _gameSize;
-        private int? _saveId;
-        private string _theme;
         private string _player1Name;
-        private readonly TextBlock _player1Text = new TextBlock();
-        private string _player2Name;
-        private readonly TextBlock _player2Text = new TextBlock();
-        private readonly List<int> _selectedCards = new List<int>();
-        private Dictionary<int, int> _shownCards = new Dictionary<int, int>();
-
-        private bool _player1Turn = true;
         private int _player1Score;
 
-        private bool _player2Turn;
+        private bool _player1Turn = true;
+        private string _player2Name;
         private int _player2Score;
+
+        private bool _player2Turn;
+        private int? _saveId;
+        private Dictionary<int, int> _shownCards = new Dictionary<int, int>();
+        private string _theme;
 
         public GamePage()
         {
@@ -92,8 +92,10 @@ namespace Memory.ui.pages
         {
             var players = new Dictionary<int, Dictionary<string, dynamic>>
             {
-                [0] = new Dictionary<string, dynamic> {{"turn", _player1Turn}, {"score", _player1Score}, {"name", _player1Name}},
-                [1] = new Dictionary<string, dynamic> {{"turn", _player2Turn}, {"score", _player2Score}, {"name", _player2Name}}
+                [0] = new Dictionary<string, dynamic>
+                    {{"turn", _player1Turn}, {"score", _player1Score}, {"name", _player1Name}},
+                [1] = new Dictionary<string, dynamic>
+                    {{"turn", _player2Turn}, {"score", _player2Score}, {"name", _player2Name}}
             };
 
             var playersJson = JsonSerializer.Serialize(players);
@@ -117,7 +119,7 @@ namespace Memory.ui.pages
         /// </summary>
         public void LoadSave()
         {
-            App.GetInstance().Database.Query($@"SELECT * FROM `saves` WHERE `id`={_saveId};", (reader) =>
+            App.GetInstance().Database.Query($@"SELECT * FROM `saves` WHERE `id`={_saveId};", reader =>
             {
                 reader.Read();
                 _multiplayer = Convert.ToBoolean(reader["multiplayer"]);
