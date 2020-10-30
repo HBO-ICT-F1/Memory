@@ -1,6 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Navigation;
 
 namespace Memory.ui.pages
 {
@@ -46,7 +47,8 @@ namespace Memory.ui.pages
 
         private void Back(object sender, RoutedEventArgs e)
         {
-            _mainWindow.ChangePage(new MainPage());
+            var nav = NavigationService.GetNavigationService(this);
+            nav.GoBack();
         }
     }
 }

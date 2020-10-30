@@ -70,7 +70,7 @@ namespace Memory.ui
 
         public void ChangePage(Page page)
         {
-            _activePage = page;
+            if (page.Title != "Settings") _activePage = page;
             UiFrame.Content = page;
         }
 

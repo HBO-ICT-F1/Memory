@@ -6,6 +6,7 @@
         WindowStyle="None"
         PreviewKeyUp="EscapeMenu">
     <Grid x:Name="mainGrid">
-        <Frame NavigationUIVisibility="Hidden" x:Name="UiFrame" />
+        <!-- <Frame NavigationUIVisibility="Hidden" x:Name="UiFrame" /> -->
+        <Frame x:Name="UiFrame" />
     </Grid>
 </Window>
