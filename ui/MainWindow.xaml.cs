@@ -33,8 +33,8 @@ namespace Memory.ui
             InitializeComponent();
             ChangePage(new MainPage());
             activePage = new MainPage();
-            Height = SystemParameters.PrimaryScreenHeight;
-            Width = SystemParameters.PrimaryScreenWidth;
+            //Height = SystemParameters.PrimaryScreenHeight;
+            //Width = SystemParameters.PrimaryScreenWidth;
             escapeMenu = new Frame {Content = new EscapeMenuPage(), Width = Width / 2, Height = Height / 2};
             escapeMenuBg = new Rectangle
             {
@@ -47,12 +47,12 @@ namespace Memory.ui
             };
             backGround.ImageSource = image.Source;
             mainWindow.Background = backGround;
-            player = new MediaPlayer();
-            player.Open(new Uri(
-                ($"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default/default.mp3"
-                )));
-            player.Volume = 0.2;
-            player.Play();
+            //player = new MediaPlayer();
+            //player.Open(new Uri(
+            //    ($"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/default/default.mp3"
+            //    )));
+            //player.Volume = 0.2;
+            //player.Play();
         }
 
         public static MainWindow GetMainWindow()
