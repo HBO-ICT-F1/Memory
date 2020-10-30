@@ -76,6 +76,17 @@ namespace Memory.ui
 
         public void ChangeTheme(Page page)
         {
+            var app = App.GetInstance();
+            var db = app.Database;
+            // Save the selected theme
+            db.Query($@"INSERT OR REPLACE INTO `settings` VALUES('theme', '{app.Theme}')");
+
+            // Change theme music
+            App.GetInstance().Player.Stop();
+            App.GetInstance().Player.Open(new Uri(
+                $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/{App.GetInstance().Theme}/default.mp3"));
+            App.GetInstance().Player.Play();
+
             var window = new MainWindow();
             window.Show();
             Close();

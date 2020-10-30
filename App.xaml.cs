@@ -61,18 +61,29 @@ namespace Memory
                 score INT
             );");
 
+            // Load selected theme
+            Database.Query("SELECT `value` FROM `settings` WHERE `name`='theme'", reader =>
+            {
+                if (reader.Read()) Theme = Convert.ToString(reader["value"]);
+            });
+
             // Load media player volume
-            Database.Query("SELECT `value` FROM `settings`", reader =>
+            Database.Query("SELECT `value` FROM `settings` WHERE `name`='volume'", reader =>
             {
                 if (reader.Read())
                 {
-                    Player.Volume = reader.GetDouble(0);
+                    Player.Volume = Convert.ToDouble(reader["value"]);
                     return;
                 }
 
                 Player.Volume = 0.2;
             });
 
+            Player.MediaEnded += (o, EventArgs) =>
+            {
+                Player.Position = TimeSpan.Zero;
+                Player.Play();
+            };
             Player.Open(new Uri(
                 $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/{Theme}/default.mp3"));
             Player.Play();
