@@ -371,8 +371,8 @@ namespace Memory.ui.pages
             int cardTwo;
             if (typeIndex == null)
             {
-                cardOne = PickRandomKey(typeCount);
-                cardTwo = PickRandomKey(typeCount, cardOne);
+                cardOne = await PickRandomKey(typeCount);
+                cardTwo = await PickRandomKey(typeCount, cardOne);
 
                 if (!_shownCards.ContainsKey(cardOne)) _shownCards.Add(cardOne, _cards[cardOne].Type);
 
@@ -434,7 +434,7 @@ namespace Memory.ui.pages
         /// <param name="knownCards">give all the cards the agent knows of</param>
         /// <param name="retryKey">the key of the card that was previously picked</param>
         /// <returns>a randomly picked key of a card that has not been picked prior</returns>
-        private int PickRandomKey(Dictionary<int, List<int>> knownCards, int? retryKey = null)
+        private async Task<int> PickRandomKey(Dictionary<int, List<int>> knownCards, int? retryKey = null)
         {
             var genericCardList = knownCards.SelectMany(c => c.Value).ToList();
             var key = 0;
@@ -443,6 +443,7 @@ namespace Memory.ui.pages
             {
                 var rand = new Random();
                 key = keyList[rand.Next(keyList.Count)];
+                await Task.Delay(20);
             } while (key == retryKey || genericCardList.Any(d => d == key));
 
             return key;
