@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,7 +21,6 @@ namespace Memory.ui
         private readonly Rectangle _escapeMenuBg;
 
         public readonly MainPage mainPage;
-        public readonly ScoreboardPage scoreboardPage;
         public readonly SettingsPage settingsPage;
         private Page _activePage;
         private long _escapeMenuDelay;
@@ -35,7 +33,6 @@ namespace Memory.ui
             escapeMenuToggle = false;
             _escapeMenuDelay = DateTime.Now.ToFileTime();
             mainPage = new MainPage();
-            scoreboardPage = new ScoreboardPage();
             settingsPage = new SettingsPage();
 
             InitializeComponent();
