@@ -1,10 +1,5 @@
-﻿using System;
-using System.IO;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Xml.Serialization;
 
 namespace Memory.ui.pages
 {
@@ -45,18 +40,27 @@ namespace Memory.ui.pages
         private void BattleRobot(object sender, RoutedEventArgs e)
         {
             MainWindow.GetMainWindow().GamePage = new GamePage();
-            MainWindow.GetMainWindow().GamePage.Start(false, _gameSize);
+            MainWindow.GetMainWindow().GamePage.Start(false, _gameSize, PlayerOne.Text, PlayerTwo.Text);
             MainWindow.GetMainWindow().ChangePage(MainWindow.GetMainWindow().GamePage);
         }
 
         private void MultiPlayer(object sender, RoutedEventArgs e)
         {
             MainWindow.GetMainWindow().GamePage = new GamePage();
-            MainWindow.GetMainWindow().GamePage.Start(true, _gameSize);
+            MainWindow.GetMainWindow().GamePage.Start(true, _gameSize, PlayerOne.Text, PlayerTwo.Text);
             MainWindow.GetMainWindow().ChangePage(MainWindow.GetMainWindow().GamePage);
         }
 
         private void Online(object sender, RoutedEventArgs e)
+        {
+        }
+
+        private void Back(object sender, RoutedEventArgs e)
+        {
+            MainWindow.GetMainWindow().ChangePage(new MainPage());
+        }
+
+        private void LastGame(object sender, RoutedEventArgs e)
         {
         }
     }

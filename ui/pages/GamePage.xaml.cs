@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.IO;
 using System.Linq;
 using System.Media;
@@ -20,29 +18,31 @@ namespace Memory.ui.pages
     /// </summary>
     public partial class GamePage : Page
     {
-        private List<Card> _cards;
-        private readonly Dictionary<int, Image> _cardImages = new Dictionary<int, Image>();
         private const double CardScaleHeight = 2;
         private const double CardScaleWidth = 2;
+        private const bool GridLines = false;
+        private readonly Dictionary<int, Image> _cardImages = new Dictionary<int, Image>();
+        private List<Card> _cards;
         private Uri _defaultCardImage;
         private readonly Grid _grid = new Grid();
-        private readonly List<int> _selectedCards = new List<int>();
-        private Dictionary<int, int> _shownCards = new Dictionary<int, int>();
-        private const bool GridLines = false;
         private List<int> _hiddenCards = new List<int>();
 
         private bool _multiplayer;
         private int _gameSize;
         private int? _saveId;
         private string _theme;
+        private string _player1Name;
+        private readonly TextBlock _player1Text = new TextBlock();
+        private string _player2Name;
+        private readonly TextBlock _player2Text = new TextBlock();
+        private readonly List<int> _selectedCards = new List<int>();
+        private Dictionary<int, int> _shownCards = new Dictionary<int, int>();
 
         private bool _player1Turn = true;
         private int _player1Score;
-        private readonly TextBlock _player1Text = new TextBlock();
 
         private bool _player2Turn;
         private int _player2Score;
-        private readonly TextBlock _player2Text = new TextBlock();
 
         public GamePage()
         {
@@ -55,10 +55,12 @@ namespace Memory.ui.pages
         /// <param name="multiplayer">a boolean if the game is multiplayer</param>
         /// <param name="gameSize">the gameSize as a int</param>
         /// <param name="saveId">the id of the save game but isn't required</param>
-        public void Start(bool multiplayer, int gameSize, int? saveId = null)
+        public void Start(bool multiplayer, int gameSize, string playerOne, string playerTwo, int? saveId = null)
         {
             _multiplayer = multiplayer;
             _gameSize = gameSize * gameSize;
+            _player1Name = playerOne;
+            _player2Name = playerTwo;
             _saveId = saveId;
             _theme = App.GetInstance().Theme;
 
@@ -187,10 +189,10 @@ namespace Memory.ui.pages
                 _player2Text.Foreground = new SolidColorBrush(Colors.Red);
             }
 
-            _player1Text.Text = $"Player 1: {_player1Score}";
+            _player1Text.Text = $"{_player1Name}: {_player1Score}";
 
-            var type = _multiplayer ? "Player 2" : "Computer";
-            _player2Text.Text = $"{type}: {_player2Score}";
+            // var type = _multiplayer ? "Player 2" : "Computer";
+            _player2Text.Text = $"{_player2Name}: {_player2Score}";
         }
 
         /// <summary>
