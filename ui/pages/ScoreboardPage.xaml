@@ -7,6 +7,39 @@
       mc:Ignorable="d"
       Title="ScoreboardPage" Height="450" Width="800">
     <Grid>
-        <TextBox>Hallo dit is de scoreboard</TextBox>
+        <TextBlock FontSize="100" Foreground="White">Hallo dit is de scoreboard</TextBlock>
+
+        <FlowDocumentReader HorizontalAlignment="Center" VerticalAlignment="Center" Width="500" Height="1000">
+            <FlowDocument>
+                <Table x:Name="Scoreboard">
+                    <Table.Columns>
+                        <TableColumn/>
+                        <TableColumn/>
+                        <TableColumn/>
+                    </Table.Columns>
+
+                    <TableRowGroup>
+                        <TableRow>
+                            <TableCell>
+                                <Paragraph FontSize="20" Background="White">
+                                    Position
+                                </Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph FontSize="20" Background="White">
+                                    Name
+                                </Paragraph>
+                            </TableCell>
+                            <TableCell>
+                                <Paragraph FontSize="20" Background="White">
+                                    Score 
+                                </Paragraph>
+                            </TableCell>
+                        </TableRow>
+                    </TableRowGroup>
+                </Table>  
+            </FlowDocument>            
+        </FlowDocumentReader>
+        
     </Grid>
 </Page>
