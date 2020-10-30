@@ -29,7 +29,7 @@ namespace Memory
         /// <summary>
         ///     The current game theme
         /// </summary>
-        public string Theme = "dogs";
+        public string Theme = "default";
 
         public App()
         {

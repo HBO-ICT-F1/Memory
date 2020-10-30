@@ -74,6 +74,14 @@ namespace Memory.ui
             UiFrame.Content = page;
         }
 
+        public void ChangeTheme(Page page)
+        {
+            var window = new MainWindow();
+            window.Show();
+            Close();
+            ChangePage(page);
+        }
+
         private void EscapeMenu(object sender, KeyEventArgs e)
         {
             if (_activePage.Title != "Game" || DateTime.Now.ToFileTime() <= _escapeMenuDelay) return;
