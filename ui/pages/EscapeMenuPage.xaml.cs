@@ -5,11 +5,11 @@ namespace Memory.ui.pages
 {
     public partial class EscapeMenuPage : Page
     {
-        private readonly MainWindow MainWindow;
+        private readonly MainWindow _mainWindow;
 
         public EscapeMenuPage()
         {
-            MainWindow = MainWindow.GetMainWindow();
+            _mainWindow = MainWindow.GetMainWindow();
             InitializeComponent();
         }
 
@@ -20,13 +20,13 @@ namespace Memory.ui.pages
 
         private void Settings(object sender, RoutedEventArgs routedEventArgs)
         {
-            MainWindow.ChangePage(new MainPage());
+            _mainWindow.ChangePage(_mainWindow.settingsPage);
             CloseMenu();
         }
 
         private void Menu(object sender, RoutedEventArgs routedEventArgs)
         {
-            MainWindow.ChangePage(new MainPage());
+            _mainWindow.ChangePage(_mainWindow.mainPage);
             CloseMenu();
         }
 
@@ -37,8 +37,8 @@ namespace Memory.ui.pages
 
         private void CloseMenu()
         {
-            MainWindow.escapeMenuToggle = false;
-            MainWindow.DrawEscapeMenu();
+            _mainWindow.escapeMenuToggle = false;
+            _mainWindow.DrawEscapeMenu();
         }
     }
 }

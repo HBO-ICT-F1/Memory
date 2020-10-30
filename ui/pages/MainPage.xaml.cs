@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 namespace Memory.ui.pages
@@ -16,17 +15,17 @@ namespace Memory.ui.pages
 
         private void Play(object sender, RoutedEventArgs e)
         {
-            MainWindow.GetMainWindow().ChangePage(new GamePage());
+            MainWindow.GetMainWindow().ChangePage(new PreGame());
         }
 
         private void Settings(object sender, RoutedEventArgs e)
         {
-            MainWindow.GetMainWindow().ChangePage(new SettingsPage());
+            MainWindow.GetMainWindow().ChangePage(MainWindow.GetMainWindow().settingsPage);
         }
 
         private void Scoreboard(object sender, RoutedEventArgs e)
         {
-            MainWindow.GetMainWindow().ChangePage(new ScoreboardPage());
+            MainWindow.GetMainWindow().ChangePage(MainWindow.GetMainWindow().scoreboardPage);
         }
 
         private void Quit(object sender, RoutedEventArgs e)

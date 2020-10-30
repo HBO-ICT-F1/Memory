@@ -3,6 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       Background="Transparent">
     <Grid>
-        <TextBox>Hallo dit is de settings page</TextBox>
+        <Slider ValueChanged="Slider_OnValueChanged" Width="300" Name="Slider" TickPlacement="TopLeft"
+                TickFrequency="0.05" Maximum="0.5" />
     </Grid>
 </Page>
