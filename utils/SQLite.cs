@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.Sqlite;
+﻿using System;
+using Microsoft.Data.Sqlite;
 
 namespace Memory.utils
 {
@@ -8,36 +9,31 @@ namespace Memory.utils
     public class SQLite
     {
         private readonly SqliteOpenMode _mode;
-        private readonly string _name, _password;
+        private readonly string _name;
 
-        public SQLite(string name) : this(name, SqliteOpenMode.ReadWriteCreate, string.Empty)
-        {
-        }
-
-        public SQLite(string name, SqliteOpenMode mode) : this(name, mode, string.Empty)
-        {
-        }
-
-        public SQLite(string name, SqliteOpenMode mode, string password)
+        public SQLite(string name, SqliteOpenMode mode = SqliteOpenMode.ReadWriteCreate)
         {
             _name = name;
             _mode = mode;
-            _password = password;
         }
 
         /// <summary>
         ///     Executes a query and returns an SQLiteDataReader
         /// </summary>
         /// <param name="query">The command to execute</param>
-        /// <returns>The response from the database</returns>
+        /// <param name="runnable">Used for handling the returned SqliteDataReader</param>
         /// <exception cref="SqliteException">An SQLite error occured during execution</exception>
-        public SqliteDataReader Query(string query)
+        public void Query(string query, Action<SqliteDataReader> runnable = null)
         {
             using (var connection = Connect())
             {
                 var command = connection.CreateCommand();
                 command.CommandText = query;
-                return command.ExecuteReader();
+
+                using (var reader = command.ExecuteReader())
+                {
+                    runnable?.Invoke(reader);
+                }
             }
         }
 
@@ -50,8 +46,7 @@ namespace Memory.utils
             var connectionStringBuilder = new SqliteConnectionStringBuilder
             {
                 DataSource = _name,
-                Mode = _mode,
-                Password = _password
+                Mode = _mode
             };
 
             var connection = new SqliteConnection(connectionStringBuilder.ToString());

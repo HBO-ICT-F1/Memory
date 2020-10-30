@@ -26,8 +26,7 @@ namespace Memory.ui
         private Page _activePage;
         private long _escapeMenuDelay;
         public bool escapeMenuToggle;
-        public MediaPlayer player = new MediaPlayer();
-        public string theme = "default";
+        public GamePage GamePage;
 
         public MainWindow()
         {
@@ -54,17 +53,11 @@ namespace Memory.ui
             var image = new Image
             {
                 Source = new BitmapImage(new Uri(
-                    $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/{theme}/background.jpg")
+                    $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/{App.GetInstance().Theme}/background.jpg")
                 )
             };
             backGround.ImageSource = image.Source;
             mainWindow.Background = backGround;
-
-            player.Open(new Uri(
-                $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/{theme}/default.mp3"));
-
-            player.Volume = 0.2;
-            player.Play();
         }
 
         public static MainWindow GetMainWindow()

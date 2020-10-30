@@ -21,12 +21,14 @@ namespace Memory.ui.pages
         private void Settings(object sender, RoutedEventArgs routedEventArgs)
         {
             _mainWindow.ChangePage(_mainWindow.settingsPage);
+            SaveGame();
             CloseMenu();
         }
 
         private void Menu(object sender, RoutedEventArgs routedEventArgs)
         {
             _mainWindow.ChangePage(_mainWindow.mainPage);
+            SaveGame();
             CloseMenu();
         }
 
@@ -39,6 +41,12 @@ namespace Memory.ui.pages
         {
             _mainWindow.escapeMenuToggle = false;
             _mainWindow.DrawEscapeMenu();
+        }
+
+        private void SaveGame()
+        {
+            MainWindow.GetMainWindow().GamePage.Save();
+            MainWindow.GetMainWindow().GamePage = null;
         }
     }
 }

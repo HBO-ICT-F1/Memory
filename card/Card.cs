@@ -9,16 +9,18 @@ namespace Memory.card
     /// </summary>
     internal class Card
     {
-        public readonly BitmapImage image;
-        public readonly int type;
-
         private Card(int type, string path)
         {
-            this.type = type;
-
-            var uri = new Uri(path);
-            image = new BitmapImage(uri);
+            Type = type;
+            Uri = new Uri(path);
         }
+
+        public Card()
+        {
+        }
+
+        public Uri Uri { get; set; }
+        public int Type { get; set; }
 
         /// <summary>
         ///     Used for generating a random list of cards.
@@ -55,6 +57,11 @@ namespace Memory.card
                 cards[j] = cards[i];
                 cards[i] = value;
             }
+        }
+
+        public BitmapImage GetImage()
+        {
+            return new BitmapImage(Uri);
         }
     }
 }

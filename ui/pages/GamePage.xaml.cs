@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Media;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,51 +22,122 @@ namespace Memory.ui.pages
         private const double CardScaleWidth = 2;
         private const bool GridLines = false;
         private readonly Dictionary<int, Image> _cardImages = new Dictionary<int, Image>();
-        private readonly List<Card> _cards;
-        private readonly Uri _defaultCardImage;
         private readonly Grid _grid = new Grid();
-
-        private readonly bool _multiplayer;
-        private readonly string _player1Name;
         private readonly TextBlock _player1Text = new TextBlock();
-        private readonly string _player2Name;
         private readonly TextBlock _player2Text = new TextBlock();
         private readonly List<int> _selectedCards = new List<int>();
-        private readonly Dictionary<int, int> _shownCards = new Dictionary<int, int>();
+        private List<Card> _cards;
+        private Uri _defaultCardImage;
+        private int _gameSize;
+        private List<int> _hiddenCards = new List<int>();
 
-        private bool _player1 = true;
+        private bool _multiplayer;
+        private string _player1Name;
         private int _player1Score;
 
-        private bool _player2;
+        private bool _player1Turn = true;
+        private string _player2Name;
         private int _player2Score;
 
-        public GamePage(bool multiplayer, int gameSize, string playerOne, string playerTwo)
+        private bool _player2Turn;
+        private int? _saveId;
+        private Dictionary<int, int> _shownCards = new Dictionary<int, int>();
+        private string _theme;
+
+        public GamePage()
         {
             InitializeComponent();
-            _multiplayer = multiplayer;
-            _player1Name = playerOne;
-            _player2Name = playerTwo;
-
-            var theme = MainWindow.GetMainWindow().theme;
-            var images =
-                Directory.GetFiles(
-                    $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/{theme}/cards",
-                    "*");
-            images = images.ToList().Take(gameSize * gameSize / 2).ToArray();
-            _defaultCardImage =
-                new Uri(
-                    $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/{theme}/default.jpg");
-
-            _cards = Card.Generate(images);
         }
 
         /// <summary>
         ///     Used to start games and score generation.
         /// </summary>
-        public void Start()
+        /// <param name="multiplayer">a boolean if the game is multiplayer</param>
+        /// <param name="gameSize">the gameSize as a int</param>
+        /// <param name="saveId">the id of the save game but isn't required</param>
+        public void Start(bool multiplayer, int gameSize, string playerOne, string playerTwo, int? saveId = null)
         {
+            _multiplayer = multiplayer;
+            _gameSize = gameSize * gameSize;
+            _player1Name = playerOne;
+            _player2Name = playerTwo;
+            _saveId = saveId;
+            _theme = App.GetInstance().Theme;
+
+            _defaultCardImage =
+                new Uri(
+                    $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/{_theme}/default.jpg");
+            if (_saveId != null)
+            {
+                LoadSave();
+            }
+            else
+            {
+                var images =
+                    Directory.GetFiles(
+                        $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/{_theme}/cards",
+                        "*");
+                images = images.ToList().Take(_gameSize / 2).ToArray();
+                _cards = Card.Generate(images);
+            }
+
             GenerateScore();
             ShowCards();
+        }
+
+        /// <summary>
+        ///     Save the current game stat.
+        /// </summary>
+        public void Save()
+        {
+            var players = new Dictionary<int, Dictionary<string, dynamic>>
+            {
+                [0] = new Dictionary<string, dynamic>
+                    {{"turn", _player1Turn}, {"score", _player1Score}, {"name", _player1Name}},
+                [1] = new Dictionary<string, dynamic>
+                    {{"turn", _player2Turn}, {"score", _player2Score}, {"name", _player2Name}}
+            };
+
+            var playersJson = JsonSerializer.Serialize(players);
+            var shownCardsJson = JsonSerializer.Serialize(_shownCards);
+            var cardsJson = JsonSerializer.Serialize(_cards);
+            var hiddenCardsJson = JsonSerializer.Serialize(_hiddenCards);
+            if (_saveId != null)
+            {
+                App.GetInstance().Database.Query(
+                    $@"UPDATE `saves` SET `multiplayer`={_multiplayer}, `game_size`={_gameSize}, `players`='{playersJson}', `cards`='{cardsJson}', `shown_cards`='{shownCardsJson}', `hidden_cards`='{hiddenCardsJson}', `theme`='{_theme}' WHERE `id`={_saveId};");
+                return;
+            }
+
+            App.GetInstance().Database.Query(
+                $@"INSERT INTO `saves` ('multiplayer', 'game_size', 'players', 'cards', 'shown_cards', 'hidden_cards', 'theme') 
+                VALUES ({_multiplayer}, {_gameSize}, '{playersJson}', '{cardsJson}', '{shownCardsJson}', '{hiddenCardsJson}', '{_theme}');");
+        }
+
+        /// <summary>
+        ///     Load saved game by _saveId.
+        /// </summary>
+        public void LoadSave()
+        {
+            App.GetInstance().Database.Query($@"SELECT * FROM `saves` WHERE `id`={_saveId};", reader =>
+            {
+                reader.Read();
+                _multiplayer = Convert.ToBoolean(reader["multiplayer"]);
+                _gameSize = Convert.ToInt32(reader["game_size"]);
+                _cards = JsonSerializer.Deserialize<List<Card>>(Convert.ToString(reader["cards"]));
+                _shownCards = JsonSerializer.Deserialize<Dictionary<int, int>>(Convert.ToString(reader["shown_cards"]));
+                _theme = Convert.ToString(reader["theme"]);
+                _hiddenCards = JsonSerializer.Deserialize<List<int>>(Convert.ToString(reader["hidden_cards"]));
+                var players =
+                    JsonSerializer.Deserialize<Dictionary<int, Dictionary<string, dynamic>>>(
+                        Convert.ToString(reader["players"]));
+                _player1Turn = Convert.ToBoolean(players[0]["turn"].ToString());
+                _player1Score = Convert.ToInt32(players[0]["score"].ToString());
+                _player1Name = players[0]["name"].ToString();
+                _player2Turn = Convert.ToBoolean(players[1]["turn"].ToString());
+                _player2Score = Convert.ToInt32(players[1]["score"].ToString());
+                _player2Name = players[1]["name"].ToString();
+            });
         }
 
         /// <summary>
@@ -109,13 +181,13 @@ namespace Memory.ui.pages
         /// </summary>
         private void UpdateCurrentPlayer()
         {
-            if (_player1)
+            if (_player1Turn)
             {
                 _player1Text.Foreground = new SolidColorBrush(Colors.Red);
                 _player2Text.Foreground = new SolidColorBrush(Colors.Black);
             }
 
-            if (_player2)
+            if (_player2Turn)
             {
                 _player1Text.Foreground = new SolidColorBrush(Colors.Black);
                 _player2Text.Foreground = new SolidColorBrush(Colors.Red);
@@ -132,8 +204,8 @@ namespace Memory.ui.pages
         /// </summary>
         private void ShowCards()
         {
-            var rows = Math.Sqrt(_cards.Count);
-            var columns = Math.Sqrt(_cards.Count);
+            var rows = Math.Sqrt(_gameSize);
+            var columns = Math.Sqrt(_gameSize);
 
             var maxScale = Math.Min(SystemParameters.PrimaryScreenHeight / rows,
                 SystemParameters.PrimaryScreenWidth / columns);
@@ -164,6 +236,12 @@ namespace Memory.ui.pages
             for (var x = 0; x < columns; x++)
             for (var y = 0; y < rows; y++)
             {
+                if (_hiddenCards.Contains(index))
+                {
+                    index++;
+                    continue;
+                }
+
                 var image = new Image();
                 image.RenderSize = new Size(cardWidth, cardHeight);
                 image.Stretch = Stretch.Fill;
@@ -187,18 +265,27 @@ namespace Memory.ui.pages
             }
 
             CardBox.Children.Add(_grid);
+            if (!_multiplayer && _player2Turn)
+            {
+                Func<Task> computerAgent = ComputerAgent;
+                computerAgent();
+            }
         }
 
         /// <summary>
         ///     Button handler to detect card selected.
         /// </summary>
+        /// <param name="card">the card that has been clicked</param>
+        /// <param name="cardImage">the image of the card that needs to be changed</param>
+        /// <param name="index">the index of card that has been click</param>
         private async void ButtonHandler(Card card, Image cardImage, int index)
         {
+            if (!_multiplayer && _player2Turn) return;
             if (_selectedCards.Count >= 1 && _selectedCards[0] == index || _selectedCards.Count == 2) return;
-            cardImage.Source = card.image;
+            cardImage.Source = card.GetImage();
             _selectedCards.Add(index);
 
-            if (!_shownCards.ContainsKey(index)) _shownCards.Add(index, card.type);
+            if (!_shownCards.ContainsKey(index)) _shownCards.Add(index, card.Type);
 
             if (_selectedCards.Count < 2) return;
             await CheckCards();
@@ -217,19 +304,22 @@ namespace Memory.ui.pages
         /// <summary>
         ///     Check if selected cards are the same.
         /// </summary>
+        /// <returns>A task</returns>
         private async Task CheckCards()
         {
-            if (_cards[_selectedCards[0]].type == _cards[_selectedCards[1]].type)
+            if (_cards[_selectedCards[0]].Type == _cards[_selectedCards[1]].Type)
             {
-                if (_player1) _player1Score++;
-                if (_player2) _player2Score++;
+                if (_player1Turn) _player1Score++;
+                if (_player2Turn) _player2Score++;
 
                 await Task.Delay(500);
                 _grid.Children.Remove(_cardImages[_selectedCards[0]]);
                 _cardImages.Remove(_selectedCards[0]);
+                _hiddenCards.Add(_selectedCards[0]);
 
                 _grid.Children.Remove(_cardImages[_selectedCards[1]]);
                 _cardImages.Remove(_selectedCards[1]);
+                _hiddenCards.Add(_selectedCards[1]);
 
                 _shownCards.Remove(_selectedCards[0]);
                 _shownCards.Remove(_selectedCards[1]);
@@ -243,8 +333,8 @@ namespace Memory.ui.pages
             _cardImages[_selectedCards[0]].Source = _cardImages[_selectedCards[1]].Source =
                 new BitmapImage(_defaultCardImage);
 
-            _player1 = !_player1;
-            _player2 = !_player2;
+            _player1Turn = !_player1Turn;
+            _player2Turn = !_player2Turn;
 
             SystemSounds.Hand.Play();
             UpdateCurrentPlayer();
@@ -258,13 +348,6 @@ namespace Memory.ui.pages
         private async Task ComputerAgent()
         {
             var typeCount = new Dictionary<int, List<int>>();
-
-            // 0 1 2 3 
-            //
-            // 
-            //
-            //
-
             foreach (var card in _shownCards)
                 if (!typeCount.ContainsKey(card.Value))
                 {
@@ -291,22 +374,23 @@ namespace Memory.ui.pages
                 cardOne = PickRandomKey(typeCount);
                 cardTwo = PickRandomKey(typeCount, cardOne);
 
-                if (!_shownCards.ContainsKey(cardOne)) _shownCards.Add(cardOne, _cards[cardOne].type);
+                if (!_shownCards.ContainsKey(cardOne)) _shownCards.Add(cardOne, _cards[cardOne].Type);
 
-                if (!_shownCards.ContainsKey(cardTwo)) _shownCards.Add(cardTwo, _cards[cardTwo].type);
+                if (!_shownCards.ContainsKey(cardTwo)) _shownCards.Add(cardTwo, _cards[cardTwo].Type);
 
                 await Task.Delay(600);
-                _cardImages[cardOne].Source = _cards[cardOne].image;
+                _cardImages[cardOne].Source = _cards[cardOne].GetImage();
                 await Task.Delay(600);
-                _cardImages[cardTwo].Source = _cards[cardTwo].image;
+                _cardImages[cardTwo].Source = _cards[cardTwo].GetImage();
                 await Task.Delay(500);
-                if (_cards[cardOne].type != _cards[cardTwo].type)
+                if (_cards[cardOne].Type != _cards[cardTwo].Type)
                 {
                     _cardImages[cardOne].Source = _cardImages[cardTwo].Source = new BitmapImage(_defaultCardImage);
-                    _player1 = !_player1;
-                    _player2 = !_player2;
+                    _player1Turn = !_player1Turn;
+                    _player2Turn = !_player2Turn;
                     SystemSounds.Hand.Play();
                     UpdateCurrentPlayer();
+                    if (_grid.Children.Count <= 0) GameFinished();
                     return;
                 }
             }
@@ -315,9 +399,9 @@ namespace Memory.ui.pages
                 cardOne = typeCount[(int) typeIndex][0];
                 cardTwo = typeCount[(int) typeIndex][1];
                 await Task.Delay(600);
-                _cardImages[typeCount[(int) typeIndex][0]].Source = _cards[typeCount[(int) typeIndex][0]].image;
+                _cardImages[typeCount[(int) typeIndex][0]].Source = _cards[typeCount[(int) typeIndex][0]].GetImage();
                 await Task.Delay(600);
-                _cardImages[typeCount[(int) typeIndex][1]].Source = _cards[typeCount[(int) typeIndex][1]].image;
+                _cardImages[typeCount[(int) typeIndex][1]].Source = _cards[typeCount[(int) typeIndex][1]].GetImage();
                 await Task.Delay(500);
             }
 
@@ -327,9 +411,11 @@ namespace Memory.ui.pages
 
             _grid.Children.Remove(_cardImages[cardOne]);
             _cardImages.Remove(cardOne);
+            _hiddenCards.Add(cardOne);
 
             _grid.Children.Remove(_cardImages[cardTwo]);
             _cardImages.Remove(cardTwo);
+            _hiddenCards.Add(cardTwo);
 
             _shownCards.Remove(cardOne);
             _shownCards.Remove(cardTwo);
@@ -339,6 +425,7 @@ namespace Memory.ui.pages
             UpdateCurrentPlayer();
 
             if (_grid.Children.Count > 0) await ComputerAgent();
+            if (_grid.Children.Count <= 0) GameFinished();
         }
 
         /// <summary>
