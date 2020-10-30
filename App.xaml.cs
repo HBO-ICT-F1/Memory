@@ -49,6 +49,7 @@ namespace Memory
                 game_size INT,
                 players LONGTEXT,
                 cards LONGTEXT,
+                hidden_cards LONGTEXT,
                 shown_cards LONGTEXT,
                 theme VARCHAR(45)
             );");

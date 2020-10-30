@@ -23,6 +23,7 @@ namespace Memory.ui
         public readonly MainPage mainPage;
         public readonly ScoreboardPage scoreboardPage;
         public readonly SettingsPage settingsPage;
+        public GamePage GamePage;
         private Page _activePage;
         private long _escapeMenuDelay;
         public bool escapeMenuToggle;

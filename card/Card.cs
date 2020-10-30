@@ -9,15 +9,18 @@ namespace Memory.card
     /// </summary>
     internal class Card
     {
-        public readonly BitmapImage image;
-        public readonly int type;
+        public Uri Uri { get; set; }
+        public int Type { get; set; }
 
         private Card(int type, string path)
         {
-            this.type = type;
+            Type = type;
+            Uri = new Uri(path);
+        }
 
-            var uri = new Uri(path);
-            image = new BitmapImage(uri);
+        public Card()
+        {
+            
         }
 
         /// <summary>
@@ -55,6 +58,11 @@ namespace Memory.card
                 cards[j] = cards[i];
                 cards[i] = value;
             }
+        }
+
+        public BitmapImage GetImage()
+        {
+            return new BitmapImage(Uri);
         }
     }
 }
