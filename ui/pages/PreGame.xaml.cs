@@ -39,21 +39,29 @@ namespace Memory.ui.pages
 
         private void BattleRobot(object sender, RoutedEventArgs e)
         {
-            var gamePage = new GamePage(false, _gameSize);
+            var gamePage = new GamePage(false, _gameSize, PlayerOne.Text, PlayerTwo.Text);
             gamePage.Start();
             MainWindow.GetMainWindow().ChangePage(gamePage);
         }
 
         private void MultiPlayer(object sender, RoutedEventArgs e)
         {
-            var gamePage = new GamePage(true, _gameSize);
+            var gamePage = new GamePage(true, _gameSize, PlayerOne.Text, PlayerTwo.Text);
             gamePage.Start();
             MainWindow.GetMainWindow().ChangePage(gamePage);
         }
 
         private void Online(object sender, RoutedEventArgs e)
         {
-            
+        }
+
+        private void Back(object sender, RoutedEventArgs e)
+        {
+            MainWindow.GetMainWindow().ChangePage(new MainPage());
+        }
+
+        private void LastGame(object sender, RoutedEventArgs e)
+        {
         }
     }
 }

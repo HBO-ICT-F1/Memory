@@ -17,37 +17,41 @@ namespace Memory.ui.pages
     /// </summary>
     public partial class GamePage : Page
     {
-        private readonly List<Card> _cards;
-        private readonly Dictionary<int, Image> _cardImages = new Dictionary<int, Image>();
         private const double CardScaleHeight = 2;
         private const double CardScaleWidth = 2;
+        private const bool GridLines = false;
+        private readonly Dictionary<int, Image> _cardImages = new Dictionary<int, Image>();
+        private readonly List<Card> _cards;
         private readonly Uri _defaultCardImage;
         private readonly Grid _grid = new Grid();
-        private readonly List<int> _selectedCards = new List<int>();
-        private readonly Dictionary<int, int> _shownCards = new Dictionary<int, int>();
-        private const bool GridLines = false;
 
         private readonly bool _multiplayer;
+        private readonly string _player1Name;
+        private readonly TextBlock _player1Text = new TextBlock();
+        private readonly string _player2Name;
+        private readonly TextBlock _player2Text = new TextBlock();
+        private readonly List<int> _selectedCards = new List<int>();
+        private readonly Dictionary<int, int> _shownCards = new Dictionary<int, int>();
 
         private bool _player1 = true;
         private int _player1Score;
-        private readonly TextBlock _player1Text = new TextBlock();
 
         private bool _player2;
         private int _player2Score;
-        private readonly TextBlock _player2Text = new TextBlock();
 
-        public GamePage(bool multiplayer, int gameSize)
+        public GamePage(bool multiplayer, int gameSize, string playerOne, string playerTwo)
         {
             InitializeComponent();
             _multiplayer = multiplayer;
-            
+            _player1Name = playerOne;
+            _player2Name = playerTwo;
+
             var theme = MainWindow.GetMainWindow().theme;
             var images =
                 Directory.GetFiles(
                     $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/{theme}/cards",
                     "*");
-            images = images.ToList().Take((gameSize * gameSize) / 2).ToArray();
+            images = images.ToList().Take(gameSize * gameSize / 2).ToArray();
             _defaultCardImage =
                 new Uri(
                     $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/{theme}/default.jpg");
@@ -117,10 +121,10 @@ namespace Memory.ui.pages
                 _player2Text.Foreground = new SolidColorBrush(Colors.Red);
             }
 
-            _player1Text.Text = $"Player 1: {_player1Score}";
+            _player1Text.Text = $"{_player1Name}: {_player1Score}";
 
-            var type = _multiplayer ? "Player 2" : "Computer";
-            _player2Text.Text = $"{type}: {_player2Score}";
+            // var type = _multiplayer ? "Player 2" : "Computer";
+            _player2Text.Text = $"{_player2Name}: {_player2Score}";
         }
 
         /// <summary>
@@ -254,13 +258,13 @@ namespace Memory.ui.pages
         private async Task ComputerAgent()
         {
             var typeCount = new Dictionary<int, List<int>>();
-            
+
             // 0 1 2 3 
             //
             // 
             //
             //
-            
+
             foreach (var card in _shownCards)
                 if (!typeCount.ContainsKey(card.Value))
                 {
@@ -355,7 +359,6 @@ namespace Memory.ui.pages
             } while (key == retryKey || genericCardList.Any(d => d == key));
 
             return key;
-            
         }
     }
 }
