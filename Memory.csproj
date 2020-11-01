@@ -100,11 +100,14 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
-      <Generator>MSBuild:Compile</Generator>
-        <SubType>Designer</SubType>
-    </ApplicationDefinition>
-      <Compile Include="card\Card.cs" />
+      <ApplicationDefinition Include="App.xaml">
+          <Generator>MSBuild:Compile</Generator>
+          <SubType>Designer</SubType>
+      </ApplicationDefinition>
+      <Compile Include="card\Card.cs"/>
+      <Compile Include="game\Game.cs"/>
+      <Compile Include="game\Player.cs"/>
+      <Compile Include="game\players\ClientPlayer.cs"/>
       <Compile Include="ui\MainWindow.xaml.cs">
           <DependentUpon>MainWindow.xaml</DependentUpon>
       </Compile>

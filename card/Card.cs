@@ -7,7 +7,7 @@ namespace Memory.card
     /// <summary>
     ///     Object used for handling the game card mechanics.
     /// </summary>
-    internal class Card
+    public class Card
     {
         private Card(int type, string path)
         {
@@ -19,6 +19,9 @@ namespace Memory.card
         {
         }
 
+        public bool Known { get; set; }
+        public bool Shown { get; set; }
+        public bool Visible { get; set; }
         public Uri Uri { get; set; }
         public int Type { get; set; }
 
