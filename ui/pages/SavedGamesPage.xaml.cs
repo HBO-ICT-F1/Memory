@@ -37,6 +37,15 @@ namespace Memory.ui.pages
                     Grid.Children.Add(btn);
                 }
             });
+            var backBtn = new Button();
+            backBtn.Margin = new Thickness(0, 500, 0, 0);
+            backBtn.Height = 50;
+            backBtn.Width = 400;
+            backBtn.Background = Brushes.Orange;
+            backBtn.Content = "Terug";
+            backBtn.FontSize = 20;
+            backBtn.Click += (sender, args) => { window.ChangePage(new PreGame()); };
+            Grid.Children.Add(backBtn);
         }
     }
 }

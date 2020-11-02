@@ -16,6 +16,6 @@
         <Label VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30" Margin="0,0,0,110">Volume</Label>
         <Slider x:Name="Volume" ValueChanged="ChangeVolume" Maximum="0.5" TickFrequency="0.01" Margin="0,0,0,50"
                 Width="400px" Background="Orange" Height="18px" />
-        <Button Click="Back" Height="50px" Width="100px" Background="Orange" FontSize="20" Margin="0, 100,0,0">Back</Button>
+        <Button Click="Back" Height="50px" Width="100px" Background="Orange" FontSize="20" Margin="0, 100,0,0">Terug</Button>
     </Grid>
 </Page>
