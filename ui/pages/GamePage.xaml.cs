@@ -44,6 +44,9 @@ namespace Memory.ui.pages
         public string Player1Name;
         public string Player2Name;
 
+        /// <summary>
+        ///     This initialize the Components
+        /// </summary>
         public GamePage()
         {
             InitializeComponent();

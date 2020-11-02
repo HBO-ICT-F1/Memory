@@ -10,10 +10,21 @@ namespace Memory.ui.pages
     /// </summary>
     public partial class SavedGamePage : Page
     {
+        /// <summary>
+        ///     This initialize the Components and start save button generation
+        /// </summary>
         public SavedGamePage()
         {
-            var window = MainWindow.GetMainWindow();
             InitializeComponent();
+            GenerateSaveButtons();
+        }
+
+        /// <summary>
+        ///     Generate all saved games buttons
+        /// </summary>
+        private void GenerateSaveButtons()
+        {
+            var window = MainWindow.GetMainWindow();
             var index = 1;
             App.GetInstance().Database.Query("SELECT * FROM `saves` ORDER BY `id` DESC LIMIT 10;", reader =>
             {
@@ -44,8 +55,18 @@ namespace Memory.ui.pages
             backBtn.Background = Brushes.Orange;
             backBtn.Content = "Terug";
             backBtn.FontSize = 20;
-            backBtn.Click += (sender, args) => { window.ChangePage(new PreGame()); };
+            backBtn.Click += Back;
             Grid.Children.Add(backBtn);
+        }
+
+        /// <summary>
+        ///     Change page to PreGame Page
+        /// </summary>
+        /// <param name="sender">A object of the button</param>
+        /// <param name="routedEventArgs">The route event arguments</param>
+        private void Back(object sender, RoutedEventArgs routedEventArgs)
+        {
+            MainWindow.GetMainWindow().ChangePage(new PreGame());
         }
     }
 }
