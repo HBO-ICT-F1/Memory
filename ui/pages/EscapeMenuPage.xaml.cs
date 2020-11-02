@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Memory.ui.pages
@@ -30,8 +31,11 @@ namespace Memory.ui.pages
 
         private void Reset(object sender, RoutedEventArgs routedEventArgs)
         {
-            // _mainWindow.ChangePage(_mainWindow.GamePage);
-            SaveGame();
+            var gamePage = new GamePage();
+            gamePage.Start(null, _mainWindow.GamePage.Multiplayer, (int) Math.Sqrt(_mainWindow.GamePage.GameSize),
+                _mainWindow.GamePage.Player1Name, _mainWindow.GamePage.Player2Name);
+            _mainWindow.GamePage = gamePage;
+            _mainWindow.ChangePage(gamePage);
             CloseMenu();
         }
 
