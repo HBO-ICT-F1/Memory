@@ -19,9 +19,11 @@ namespace Memory.ui.pages
             {
                 case "default":
                     Default.Background = Brushes.Gray;
+                    Default.Click -= ThemeSpace;
                     break;
                 case "dogs":
                     Dogs.Background = Brushes.Gray;
+                    Dogs.Click -= ThemeDogs;
                     break;
             }
 
