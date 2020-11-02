@@ -7,6 +7,9 @@ namespace Memory.ui.pages
     {
         private readonly MainWindow _mainWindow;
 
+        /// <summary>
+        ///     This initialize the Components and MainWindow
+        /// </summary>
         public EscapeMenuPage()
         {
             _mainWindow = MainWindow.GetMainWindow();
@@ -21,6 +24,13 @@ namespace Memory.ui.pages
         private void Settings(object sender, RoutedEventArgs routedEventArgs)
         {
             _mainWindow.ChangePage(_mainWindow.settingsPage);
+            SaveGame();
+            CloseMenu();
+        }
+
+        private void Reset(object sender, RoutedEventArgs routedEventArgs)
+        {
+            // _mainWindow.ChangePage(_mainWindow.GamePage);
             SaveGame();
             CloseMenu();
         }
