@@ -1,9 +1,21 @@
 ﻿<Page x:Class="Memory.ui.pages.SettingsPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      Background="Transparent">
+      Background="Transparent"
+      Title="Settings">
     <Grid>
-        <Slider ValueChanged="Slider_OnValueChanged" Width="300" Name="Slider" TickPlacement="TopLeft"
-                TickFrequency="0.05" Maximum="0.5" />
+        <Label VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30" Margin="0,0,0,500">Thema's</Label>
+        <Button x:Name="Dogs" Click="ThemeDogs" Height="50px" Width="400px" Background="Orange" FontSize="20"
+                Margin="0,0,0,400">
+            Man's best friends!
+        </Button>
+        <Button x:Name="Default" Click="ThemeSpace" Height="50px" Width="400px" Background="Orange" FontSize="20"
+                Margin="0, 100,0,400">
+            Outer space!
+        </Button>
+        <Label VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="30" Margin="0,0,0,110">Volume</Label>
+        <Slider x:Name="Volume" ValueChanged="ChangeVolume" Maximum="0.5" TickFrequency="0.01" Margin="0,0,0,50"
+                Width="400px" Background="Orange" Height="18px" />
+        <Button Click="Back" Height="50px" Width="100px" Background="Orange" FontSize="20" Margin="0, 100,0,0">Back</Button>
     </Grid>
 </Page>

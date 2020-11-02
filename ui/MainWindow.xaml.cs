@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -22,7 +21,6 @@ namespace Memory.ui
         private readonly Rectangle _escapeMenuBg;
 
         public readonly MainPage mainPage;
-        public readonly ScoreboardPage scoreboardPage;
         public readonly SettingsPage settingsPage;
         private Page _activePage;
         private long _escapeMenuDelay;
@@ -35,7 +33,6 @@ namespace Memory.ui
             escapeMenuToggle = false;
             _escapeMenuDelay = DateTime.Now.ToFileTime();
             mainPage = new MainPage();
-            scoreboardPage = new ScoreboardPage();
             settingsPage = new SettingsPage();
 
             InitializeComponent();
@@ -73,8 +70,27 @@ namespace Memory.ui
 
         public void ChangePage(Page page)
         {
-            _activePage = page;
+            if (page.Title != "Settings") _activePage = page;
             UiFrame.Content = page;
+        }
+
+        public void ChangeTheme(Page page)
+        {
+            var app = App.GetInstance();
+            var db = app.Database;
+            // Save the selected theme
+            db.Query($@"INSERT OR REPLACE INTO `settings` VALUES('theme', '{app.Theme}')");
+
+            // Change theme music
+            App.GetInstance().Player.Stop();
+            App.GetInstance().Player.Open(new Uri(
+                $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/{App.GetInstance().Theme}/default.mp3"));
+            App.GetInstance().Player.Play();
+
+            var window = new MainWindow();
+            window.Show();
+            Close();
+            ChangePage(page);
         }
 
         private void EscapeMenu(object sender, KeyEventArgs e)

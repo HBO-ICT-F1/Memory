@@ -29,7 +29,7 @@ namespace Memory
         /// <summary>
         ///     The current game theme
         /// </summary>
-        public string Theme = "dogs";
+        public string Theme = "default";
 
         public App()
         {
@@ -54,18 +54,36 @@ namespace Memory
                 theme VARCHAR(45)
             );");
 
+            // Create table for saving scores
+            Database.Query(@"CREATE TABLE IF NOT EXISTS `scores` (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name LONGTEXT,
+                score INT
+            );");
+
+            // Load selected theme
+            Database.Query("SELECT `value` FROM `settings` WHERE `name`='theme'", reader =>
+            {
+                if (reader.Read()) Theme = Convert.ToString(reader["value"]);
+            });
+
             // Load media player volume
-            Database.Query("SELECT `value` FROM `settings`", reader =>
+            Database.Query("SELECT `value` FROM `settings` WHERE `name`='volume'", reader =>
             {
                 if (reader.Read())
                 {
-                    Player.Volume = reader.GetDouble(0);
+                    Player.Volume = Convert.ToDouble(reader["value"]);
                     return;
                 }
 
                 Player.Volume = 0.2;
             });
 
+            Player.MediaEnded += (o, EventArgs) =>
+            {
+                Player.Position = TimeSpan.Zero;
+                Player.Play();
+            };
             Player.Open(new Uri(
                 $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/{Theme}/default.mp3"));
             Player.Play();

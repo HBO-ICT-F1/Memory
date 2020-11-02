@@ -55,7 +55,8 @@ namespace Memory.ui.pages
         /// <param name="multiplayer">a boolean if the game is multiplayer</param>
         /// <param name="gameSize">the gameSize as a int</param>
         /// <param name="saveId">the id of the save game but isn't required</param>
-        public void Start(bool multiplayer, int gameSize, string playerOne, string playerTwo, int? saveId = null)
+        public void Start(int? saveId = null, bool multiplayer = false, int gameSize = 0, string playerOne = "",
+            string playerTwo = "")
         {
             _multiplayer = multiplayer;
             _gameSize = gameSize * gameSize;
@@ -298,6 +299,15 @@ namespace Memory.ui.pages
         /// </summary>
         private void GameFinished()
         {
+            if (_multiplayer)
+                App.GetInstance().Database
+                    .Query($@"INSERT INTO `scores` ('name', 'score') VALUES ('{_player2Name}', {_player2Score});");
+
+            App.GetInstance().Database
+                .Query($@"INSERT INTO `scores` ('name', 'score') VALUES ('{_player1Name}', {_player1Score});");
+
+            if (_saveId != null) App.GetInstance().Database.Query($@"DELETE FROM `saves` WHERE `id`={_saveId};");
+
             MainWindow.GetMainWindow().ChangePage(MainWindow.GetMainWindow().mainPage);
         }
 
@@ -371,8 +381,8 @@ namespace Memory.ui.pages
             int cardTwo;
             if (typeIndex == null)
             {
-                cardOne = PickRandomKey(typeCount);
-                cardTwo = PickRandomKey(typeCount, cardOne);
+                cardOne = await PickRandomKey(typeCount);
+                cardTwo = await PickRandomKey(typeCount, cardOne);
 
                 if (!_shownCards.ContainsKey(cardOne)) _shownCards.Add(cardOne, _cards[cardOne].Type);
 
@@ -434,7 +444,7 @@ namespace Memory.ui.pages
         /// <param name="knownCards">give all the cards the agent knows of</param>
         /// <param name="retryKey">the key of the card that was previously picked</param>
         /// <returns>a randomly picked key of a card that has not been picked prior</returns>
-        private int PickRandomKey(Dictionary<int, List<int>> knownCards, int? retryKey = null)
+        private async Task<int> PickRandomKey(Dictionary<int, List<int>> knownCards, int? retryKey = null)
         {
             var genericCardList = knownCards.SelectMany(c => c.Value).ToList();
             var key = 0;
@@ -443,6 +453,7 @@ namespace Memory.ui.pages
             {
                 var rand = new Random();
                 key = keyList[rand.Next(keyList.Count)];
+                await Task.Delay(20);
             } while (key == retryKey || genericCardList.Any(d => d == key));
 
             return key;
