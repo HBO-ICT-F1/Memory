@@ -59,6 +59,9 @@ namespace Memory.card
             }
         }
 
+        /// <summary>
+        ///     Get the bitmap image of the Uri
+        /// </summary>
         public BitmapImage GetImage()
         {
             return new BitmapImage(Uri);

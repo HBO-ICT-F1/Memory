@@ -27,6 +27,9 @@ namespace Memory.ui
         public bool escapeMenuToggle;
         public GamePage GamePage;
 
+        /// <summary>
+        ///     This initialize the Components and configures some default variables
+        /// </summary>
         public MainWindow()
         {
             mainWindow = this;
@@ -58,22 +61,36 @@ namespace Memory.ui
             mainWindow.Background = backGround;
         }
 
+        /// <summary>
+        ///     Get the main window object
+        /// </summary>
         public static MainWindow GetMainWindow()
         {
             return mainWindow;
         }
 
+        /// <summary>
+        ///     Quit the application
+        /// </summary>
         public static void QuitApplication()
         {
             Environment.Exit(0);
         }
 
+        /// <summary>
+        ///     Change the current page
+        /// </summary>
+        /// <param name="page">A object of the instance Page is used to change to a page</param>
         public void ChangePage(Page page)
         {
             if (page.Title != "Settings") _activePage = page;
             UiFrame.Content = page;
         }
 
+        /// <summary>
+        ///     Configure the theme that is previous configured
+        /// </summary>
+        /// <param name="page">A object of the instance Page is used to change to a page</param>
         public void ChangeTheme(Page page)
         {
             var app = App.GetInstance();
@@ -93,15 +110,23 @@ namespace Memory.ui
             ChangePage(page);
         }
 
-        private void EscapeMenu(object sender, KeyEventArgs e)
+        /// <summary>
+        ///     Change the current page
+        /// </summary>
+        /// <param name="sender">A object of the button</param>
+        /// <param name="keyEventArgs">The key event arguments</param>
+        private void EscapeMenu(object sender, KeyEventArgs keyEventArgs)
         {
             if (_activePage.Title != "Game" || DateTime.Now.ToFileTime() <= _escapeMenuDelay) return;
-            if (e.Key == Key.Escape) escapeMenuToggle = !escapeMenuToggle;
+            if (keyEventArgs.Key == Key.Escape) escapeMenuToggle = !escapeMenuToggle;
 
             DrawEscapeMenu();
             _escapeMenuDelay = DateTime.Now.ToFileTime() + 5000000; //0.5S
         }
 
+        /// <summary>
+        ///     Generate the scape menu page
+        /// </summary>
         public void DrawEscapeMenu()
         {
             if (!escapeMenuToggle)

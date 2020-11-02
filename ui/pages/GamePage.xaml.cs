@@ -28,22 +28,25 @@ namespace Memory.ui.pages
         private readonly List<int> _selectedCards = new List<int>();
         private List<Card> _cards;
         private Uri _defaultCardImage;
-        private int _gameSize;
         private List<int> _hiddenCards = new List<int>();
-
-        private bool _multiplayer;
-        private string _player1Name;
         private int _player1Score;
 
         private bool _player1Turn = true;
-        private string _player2Name;
         private int _player2Score;
 
         private bool _player2Turn;
         private int? _saveId;
         private Dictionary<int, int> _shownCards = new Dictionary<int, int>();
         private string _theme;
+        public int GameSize;
 
+        public bool Multiplayer;
+        public string Player1Name;
+        public string Player2Name;
+
+        /// <summary>
+        ///     This initialize the Components
+        /// </summary>
         public GamePage()
         {
             InitializeComponent();
@@ -55,13 +58,15 @@ namespace Memory.ui.pages
         /// <param name="multiplayer">a boolean if the game is multiplayer</param>
         /// <param name="gameSize">the gameSize as a int</param>
         /// <param name="saveId">the id of the save game but isn't required</param>
+        /// <param name="playerOne">the name of player 1</param>
+        /// <param name="playerTwo">the name of player 2</param>
         public void Start(int? saveId = null, bool multiplayer = false, int gameSize = 0, string playerOne = "",
             string playerTwo = "")
         {
-            _multiplayer = multiplayer;
-            _gameSize = gameSize * gameSize;
-            _player1Name = playerOne;
-            _player2Name = playerTwo;
+            Multiplayer = multiplayer;
+            GameSize = gameSize * gameSize;
+            Player1Name = playerOne;
+            Player2Name = playerTwo;
             _saveId = saveId;
             _theme = App.GetInstance().Theme;
 
@@ -78,7 +83,7 @@ namespace Memory.ui.pages
                     Directory.GetFiles(
                         $"{Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory()))}/ui/assets/themes/{_theme}/cards",
                         "*");
-                images = images.ToList().Take(_gameSize / 2).ToArray();
+                images = images.ToList().Take(GameSize / 2).ToArray();
                 _cards = Card.Generate(images);
             }
 
@@ -94,9 +99,9 @@ namespace Memory.ui.pages
             var players = new Dictionary<int, Dictionary<string, dynamic>>
             {
                 [0] = new Dictionary<string, dynamic>
-                    {{"turn", _player1Turn}, {"score", _player1Score}, {"name", _player1Name}},
+                    {{"turn", _player1Turn}, {"score", _player1Score}, {"name", Player1Name}},
                 [1] = new Dictionary<string, dynamic>
-                    {{"turn", _player2Turn}, {"score", _player2Score}, {"name", _player2Name}}
+                    {{"turn", _player2Turn}, {"score", _player2Score}, {"name", Player2Name}}
             };
 
             var playersJson = JsonSerializer.Serialize(players);
@@ -106,13 +111,13 @@ namespace Memory.ui.pages
             if (_saveId != null)
             {
                 App.GetInstance().Database.Query(
-                    $@"UPDATE `saves` SET `multiplayer`={_multiplayer}, `game_size`={_gameSize}, `players`='{playersJson}', `cards`='{cardsJson}', `shown_cards`='{shownCardsJson}', `hidden_cards`='{hiddenCardsJson}', `theme`='{_theme}' WHERE `id`={_saveId};");
+                    $@"UPDATE `saves` SET `multiplayer`={Multiplayer}, `game_size`={GameSize}, `players`='{playersJson}', `cards`='{cardsJson}', `shown_cards`='{shownCardsJson}', `hidden_cards`='{hiddenCardsJson}', `theme`='{_theme}' WHERE `id`={_saveId};");
                 return;
             }
 
             App.GetInstance().Database.Query(
                 $@"INSERT INTO `saves` ('multiplayer', 'game_size', 'players', 'cards', 'shown_cards', 'hidden_cards', 'theme') 
-                VALUES ({_multiplayer}, {_gameSize}, '{playersJson}', '{cardsJson}', '{shownCardsJson}', '{hiddenCardsJson}', '{_theme}');");
+                VALUES ({Multiplayer}, {GameSize}, '{playersJson}', '{cardsJson}', '{shownCardsJson}', '{hiddenCardsJson}', '{_theme}');");
         }
 
         /// <summary>
@@ -123,8 +128,8 @@ namespace Memory.ui.pages
             App.GetInstance().Database.Query($@"SELECT * FROM `saves` WHERE `id`={_saveId};", reader =>
             {
                 reader.Read();
-                _multiplayer = Convert.ToBoolean(reader["multiplayer"]);
-                _gameSize = Convert.ToInt32(reader["game_size"]);
+                Multiplayer = Convert.ToBoolean(reader["multiplayer"]);
+                GameSize = Convert.ToInt32(reader["game_size"]);
                 _cards = JsonSerializer.Deserialize<List<Card>>(Convert.ToString(reader["cards"]));
                 _shownCards = JsonSerializer.Deserialize<Dictionary<int, int>>(Convert.ToString(reader["shown_cards"]));
                 _theme = Convert.ToString(reader["theme"]);
@@ -134,10 +139,10 @@ namespace Memory.ui.pages
                         Convert.ToString(reader["players"]));
                 _player1Turn = Convert.ToBoolean(players[0]["turn"].ToString());
                 _player1Score = Convert.ToInt32(players[0]["score"].ToString());
-                _player1Name = players[0]["name"].ToString();
+                Player1Name = players[0]["name"].ToString();
                 _player2Turn = Convert.ToBoolean(players[1]["turn"].ToString());
                 _player2Score = Convert.ToInt32(players[1]["score"].ToString());
-                _player2Name = players[1]["name"].ToString();
+                Player2Name = players[1]["name"].ToString();
             });
         }
 
@@ -194,10 +199,10 @@ namespace Memory.ui.pages
                 _player2Text.Foreground = new SolidColorBrush(Colors.Red);
             }
 
-            _player1Text.Text = $"{_player1Name}: {_player1Score}";
+            _player1Text.Text = $"{Player1Name}: {_player1Score}";
 
             // var type = _multiplayer ? "Player 2" : "Computer";
-            _player2Text.Text = $"{_player2Name}: {_player2Score}";
+            _player2Text.Text = $"{Player2Name}: {_player2Score}";
         }
 
         /// <summary>
@@ -205,8 +210,8 @@ namespace Memory.ui.pages
         /// </summary>
         private void ShowCards()
         {
-            var rows = Math.Sqrt(_gameSize);
-            var columns = Math.Sqrt(_gameSize);
+            var rows = Math.Sqrt(GameSize);
+            var columns = Math.Sqrt(GameSize);
 
             var maxScale = Math.Min(SystemParameters.PrimaryScreenHeight / rows,
                 SystemParameters.PrimaryScreenWidth / columns);
@@ -266,7 +271,7 @@ namespace Memory.ui.pages
             }
 
             CardBox.Children.Add(_grid);
-            if (!_multiplayer && _player2Turn)
+            if (!Multiplayer && _player2Turn)
             {
                 Func<Task> computerAgent = ComputerAgent;
                 computerAgent();
@@ -281,7 +286,7 @@ namespace Memory.ui.pages
         /// <param name="index">the index of card that has been click</param>
         private async void ButtonHandler(Card card, Image cardImage, int index)
         {
-            if (!_multiplayer && _player2Turn) return;
+            if (!Multiplayer && _player2Turn) return;
             if (_selectedCards.Count >= 1 && _selectedCards[0] == index || _selectedCards.Count == 2) return;
             cardImage.Source = card.GetImage();
             _selectedCards.Add(index);
@@ -299,12 +304,12 @@ namespace Memory.ui.pages
         /// </summary>
         private void GameFinished()
         {
-            if (_multiplayer)
+            if (Multiplayer)
                 App.GetInstance().Database
-                    .Query($@"INSERT INTO `scores` ('name', 'score') VALUES ('{_player2Name}', {_player2Score});");
+                    .Query($@"INSERT INTO `scores` ('name', 'score') VALUES ('{Player2Name}', {_player2Score});");
 
             App.GetInstance().Database
-                .Query($@"INSERT INTO `scores` ('name', 'score') VALUES ('{_player1Name}', {_player1Score});");
+                .Query($@"INSERT INTO `scores` ('name', 'score') VALUES ('{Player1Name}', {_player1Score});");
 
             if (_saveId != null) App.GetInstance().Database.Query($@"DELETE FROM `saves` WHERE `id`={_saveId};");
 
@@ -348,7 +353,7 @@ namespace Memory.ui.pages
 
             SystemSounds.Hand.Play();
             UpdateCurrentPlayer();
-            if (!_multiplayer) await ComputerAgent();
+            if (!Multiplayer) await ComputerAgent();
         }
 
         /// <summary>

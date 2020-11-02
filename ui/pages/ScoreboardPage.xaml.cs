@@ -8,9 +8,20 @@ namespace Memory.ui.pages
 {
     public partial class ScoreboardPage : Page
     {
+        /// <summary>
+        ///     This initialize the Components and start scoreboard generation
+        /// </summary>
         public ScoreboardPage()
         {
             InitializeComponent();
+            GenerateScoreboard();
+        }
+
+        /// <summary>
+        ///     Generate scoreboard rows and cells
+        /// </summary>
+        private void GenerateScoreboard()
+        {
             App.GetInstance().Database.Query("SELECT * FROM `scores` ORDER BY `score` DESC LIMIT 10;", reader =>
             {
                 var index = 1;
@@ -40,7 +51,12 @@ namespace Memory.ui.pages
             });
         }
 
-        private void Back(object sender, RoutedEventArgs e)
+        /// <summary>
+        ///     Change page to Main Page
+        /// </summary>
+        /// <param name="sender">A object of the button</param>
+        /// <param name="routedEventArgs">The route event arguments</param>
+        private void Back(object sender, RoutedEventArgs routedEventArgs)
         {
             MainWindow.GetMainWindow().ChangePage(new MainPage());
         }
